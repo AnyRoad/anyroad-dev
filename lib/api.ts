@@ -1,47 +1,38 @@
-import fs from 'fs'
-import { join } from 'path'
-import matter from 'gray-matter'
+import fs from 'fs';
+import { join } from 'path';
+import matter from 'gray-matter';
+import Post from '../types/post';
 
-const postsDirectory = join(process.cwd(), '_posts')
+const postsDirectory = join(process.cwd(), '_posts');
 
-export function getPostSlugs() {
-  return fs.readdirSync(postsDirectory)
+export function getPostSlugs(): string[] {
+  return fs.readdirSync(postsDirectory);
 }
 
-export function getPostBySlug(slug: string, fields: string[] = []) {
-  const realSlug = slug.replace(/\.md$/, '')
-  const fullPath = join(postsDirectory, `${realSlug}.md`)
-  const fileContents = fs.readFileSync(fullPath, 'utf8')
-  const { data, content } = matter(fileContents)
+export function getPostBySlug(file: string): Post {
+  const fileName = file.replace(/\.md$/, '');
+  const fullPath = join(postsDirectory, `${fileName}.md`);
+  const [date, slug] = fileName.split('_');
+  const [year, month, day] = date.split('-');
+  const fileContents = fs.readFileSync(fullPath, 'utf8');
+  const { data, content } = matter(fileContents);
 
-  type Items = {
-    [key: string]: string
-  }
-
-  const items: Items = {}
-
-  // Ensure only the minimal needed data is exposed
-  fields.forEach((field) => {
-    if (field === 'slug') {
-      items[field] = realSlug
-    }
-    if (field === 'content') {
-      items[field] = content
-    }
-
-    if (data[field]) {
-      items[field] = data[field]
-    }
-  })
-
-  return items
+  return {
+    slug,
+    year: parseInt(year),
+    month: parseInt(month),
+    day: parseInt(day),
+    content,
+    path: [year, month, day, slug].join('/'),
+    title: data['title'],
+    coverImage: data['coverImage'],
+    excerpt: data['excerpt'],
+    ogImage: data['ogImage'],
+  };
 }
 
-export function getAllPosts(fields: string[] = []) {
-  const slugs = getPostSlugs()
-  const posts = slugs
-    .map((slug) => getPostBySlug(slug, fields))
-    // sort posts by date in descending order
-    .sort((post1, post2) => (post1.date > post2.date ? -1 : 1))
-  return posts
+export function getAllPosts(): Post[] {
+  const slugs = getPostSlugs();
+  const posts = slugs.map((slug) => getPostBySlug(slug));
+  return posts;
 }

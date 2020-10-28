@@ -1,0 +1,8 @@
+next
+.now
+dist
+public
+*.json
+*.d.ts
+*.yml
+node_modules

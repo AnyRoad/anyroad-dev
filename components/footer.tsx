@@ -1,32 +1,33 @@
-import Container from './container'
-import { EXAMPLE_PATH } from '../lib/constants'
+import Container from './container';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faGithub,
+  faLinkedin,
+  faTwitter,
+  faStackOverflow,
+} from '@fortawesome/free-brands-svg-icons';
 
-const Footer = () => {
+const Footer: React.FunctionComponent = () => {
   return (
-    <footer className="bg-accent-1 border-t border-accent-2">
+    <footer className="bg-accent-2 border-t fixed z-50 w-full px-5 py-2 bottom-0">
       <Container>
-        <div className="py-28 flex flex-col lg:flex-row items-center">
-          <h3 className="text-4xl lg:text-5xl font-bold tracking-tighter leading-tight text-center lg:text-left mb-10 lg:mb-0 lg:pr-4 lg:w-1/2">
-            Statically Generated with Next.js.
-          </h3>
-          <div className="flex flex-col lg:flex-row justify-center items-center lg:pl-4 lg:w-1/2">
-            <a
-              href="https://nextjs.org/docs/basic-features/pages"
-              className="mx-3 bg-black hover:bg-white hover:text-black border border-black text-white font-bold py-3 px-12 lg:px-8 duration-200 transition-colors mb-6 lg:mb-0"
-            >
-              Read Documentation
-            </a>
-            <a
-              href={`https://github.com/vercel/next.js/tree/canary/examples/${EXAMPLE_PATH}`}
-              className="mx-3 font-bold hover:underline"
-            >
-              View on GitHub
-            </a>
-          </div>
+        <div className="flex flex-col lg:flex-row justify-center items-center lg:pl-4 lg:w-1/2">
+          <a href="https://github.com/anyroad" className="mx-3 font-bold hover:underline">
+            <FontAwesomeIcon icon={faGithub} /> Github
+          </a>
+          <a href="https://linkedin.com" className="mx-3 font-bold hover:underline">
+            <FontAwesomeIcon icon={faLinkedin} /> LinkedIn
+          </a>
+          <a href="https://twitter.com" className="mx-3 font-bold hover:underline">
+            <FontAwesomeIcon icon={faTwitter} /> Twitter
+          </a>
+          <a href="https://stackoverflow.com" className="mx-3 font-bold hover:underline">
+            <FontAwesomeIcon icon={faStackOverflow} /> Stack Overflow
+          </a>
         </div>
       </Container>
     </footer>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

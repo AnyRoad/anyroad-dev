@@ -1,58 +1,94 @@
-import Container from '../components/container'
-import MoreStories from '../components/more-stories'
-import HeroPost from '../components/hero-post'
-import Intro from '../components/intro'
-import Layout from '../components/layout'
-import { getAllPosts } from '../lib/api'
-import Head from 'next/head'
-import { CMS_NAME } from '../lib/constants'
-import Post from '../types/post'
+import { Fragment } from 'react';
+import Container from '../components/container';
+import Intro from '../components/intro';
+import Layout from '../components/layout';
+import { getAllPosts } from '../lib/api';
+import Head from 'next/head';
+import Post from '../types/post';
 
 type Props = {
-  allPosts: Post[]
+  posts: Post[];
+};
+
+function postsByYear(posts: Post[]): { [year: number]: Post[] } {
+  const byYear: { [year: number]: Post[] } = {};
+  posts.forEach((post) => {
+    const year = post.year;
+    byYear[year] = byYear[year] || [];
+    byYear[year].push(post);
+  });
+  return byYear;
 }
 
-const Index = ({ allPosts }: Props) => {
-  const heroPost = allPosts[0]
-  const morePosts = allPosts.slice(1)
+const Index: React.FunctionComponent<Props> = ({ posts }: Props) => {
   return (
     <>
       <Layout>
         <Head>
-          <title>Next.js Blog Example with {CMS_NAME}</title>
+          <title>Next.js Blog Example with</title>
         </Head>
         <Container>
           <Intro />
-          {heroPost && (
-            <HeroPost
-              title={heroPost.title}
-              coverImage={heroPost.coverImage}
-              date={heroPost.date}
-              author={heroPost.author}
-              slug={heroPost.slug}
-              excerpt={heroPost.excerpt}
-            />
-          )}
-          {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+          <section id="TOC">
+            {Object.entries(postsByYear(posts))
+              .sort(([yearA], [yearB]) => {
+                return Number(yearB) - Number(yearA);
+              })
+              .map(([year, posts]) => {
+                return (
+                  <Fragment key={year}>
+                    <span className="text-6xl mt-5">{year}</span>
+                    <ol className="list-none mb-2">
+                      {posts
+                        .sort(({ month: a, day: dayA }, { month: b, day: dayB }) => {
+                          const monthDiff = Number(b) - Number(a);
+                          if (monthDiff !== 0) {
+                            return monthDiff;
+                          } else {
+                            return Number(dayB) - Number(dayA);
+                          }
+                        })
+                        .map((post) => {
+                          const date = new Date(post.year, post.month - 1, post.day);
+                          const month = date.toLocaleString('default', {
+                            month: 'short',
+                            day: '2-digit',
+                          });
+
+                          return (
+                            <li key={post.slug} className="list-none">
+                              <time>
+                                <span className="text-lg">{month}</span>
+                              </time>
+                              <span className="text-xl">
+                                <a href={`posts/${post.path}`}>{post.title}</a>
+                              </span>
+                            </li>
+                          );
+                        })}
+                    </ol>
+                  </Fragment>
+                );
+              })}
+            <style jsx>{`
+              #TOC li {
+                display: grid;
+                grid-template-columns: 120px auto;
+              }
+            `}</style>
+          </section>
         </Container>
       </Layout>
     </>
-  )
-}
+  );
+};
 
-export default Index
+export default Index;
 
-export const getStaticProps = async () => {
-  const allPosts = getAllPosts([
-    'title',
-    'date',
-    'slug',
-    'author',
-    'coverImage',
-    'excerpt',
-  ])
+export const getStaticProps = async (): Promise<{ props: { posts: Post[] } }> => {
+  const posts = getAllPosts();
 
   return {
-    props: { allPosts },
-  }
-}
+    props: { posts },
+  };
+};
