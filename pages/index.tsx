@@ -25,7 +25,7 @@ const Index: React.FunctionComponent<Props> = ({ posts }: Props) => {
     <>
       <Layout>
         <Head>
-          <title>Next.js Blog Example with</title>
+          <title>Andrei Alikov Dev Blog</title>
         </Head>
         <Container>
           <Intro />
