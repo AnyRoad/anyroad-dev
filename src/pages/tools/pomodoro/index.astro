@@ -1,0 +1,9 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Pomodoro from './pomodoro-timer.tsx';
+---
+
+<BaseLayout title="View Json Data" description="" permalink="" image={''}>
+  <h2 style="margin-top: 2em;">View Json Data</h2>
+  <Pomodoro client:load />
+</BaseLayout>

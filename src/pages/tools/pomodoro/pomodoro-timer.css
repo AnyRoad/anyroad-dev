@@ -1,0 +1,68 @@
+.button {
+  min-width: 250px;
+  background-color: #164a41;
+  border: none;
+  color: #ffffff;
+  padding: 12px 26px;
+  @apply rounded m-1 subpixel-antialiased;
+}
+
+.button:disabled {
+  background-color: gray;
+}
+
+.minutes-input {
+  padding: 2px 8px;
+  max-width: 80px;
+  border: none;
+  line-height: 41px;
+  background-color: #daded4;
+}
+
+.right-label {
+  color: #164a41;
+  margin-left: 5px;
+  @apply font-bold antialiased text-lg;
+}
+
+.pomodoro {
+  border: 3px solid darkred;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.completed {
+  background-color: lightgrey;
+}
+
+.long-brake {
+  border: 3px solid #4d774e;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.short-brake {
+  border: 3px solid #164a41;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.pomodoro-title {
+  @apply font-bold text-lg subpixel-antialiased;
+}
+
+.pomodoro-label {
+  @apply font-bold text-sm subpixel-antialiased;
+}
+
+.pomodoro-value {
+  @apply text-sm subpixel-antialiased;
+}
+
+.pomodoro-remaining {
+  @apply text-lg subpixel-antialiased;
+}
+
+.pomodoro-icon {
+  @apply pr-1;
+}

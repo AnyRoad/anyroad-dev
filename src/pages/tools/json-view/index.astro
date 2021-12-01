@@ -1,0 +1,9 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import JsonFormatter from './json-view.tsx';
+---
+
+<BaseLayout title="View Json Data" description="" permalink="" image={''}>
+  <h2 style="margin-top: 1em;">View Json Data</h2>
+  <JsonFormatter client:load />
+</BaseLayout>
