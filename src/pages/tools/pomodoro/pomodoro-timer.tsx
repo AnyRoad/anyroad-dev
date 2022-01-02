@@ -2,30 +2,15 @@ import * as React from 'react';
 import produce, { enableMapSet } from 'immer';
 import classNames from 'classnames/bind';
 import styles from './pomodoro-timer.css';
+import Pomodoro, { PomodoroInfo, PomodoroType } from './pomodoro';
 
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(duration);
-dayjs.extend(relativeTime);
 
 enableMapSet();
 
 const cx = classNames.bind(styles);
-
-enum PomodoroType {
-  Pomodoro = 1,
-  ShortBrake,
-  LongBrake
-}
-
-type Pomodoro = {
-  type: PomodoroType;
-  startTime: Date;
-  completed: boolean;
-  completeTime: Date | null;
-  remainingTime: number;
-};
 
 enum ActionType {
   StartPomodoro = 1,
@@ -45,7 +30,7 @@ type Action =
   | { type: ActionType.CountDownTime };
 
 type State = {
-  pomodoros: Pomodoro[];
+  pomodoros: PomodoroInfo[];
   pomodoroTimes: Map<PomodoroType, number>;
 };
 
@@ -64,6 +49,23 @@ const initialState: State = {
     [PomodoroType.LongBrake, minutes(20)]
   ])
 };
+
+function createNotification(title: string, body: string) {
+  return new Notification(title, { body: body });
+}
+
+function showNotification(title: string, body: string) {
+  const permission = Notification.permission;
+  if (permission === 'granted') {
+    createNotification(title, body);
+  } else if (permission !== 'denied') {
+    Notification.requestPermission().then(function (result) {
+      if (result === 'granted') {
+        createNotification(title, body);
+      }
+    });
+  }
+}
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
@@ -104,16 +106,7 @@ function reducer(state: State, action: Action): State {
         if (lastPomodoro.remainingTime === 0) {
           lastPomodoro.completed = true;
           lastPomodoro.completeTime = new Date();
-          const permission = Notification.permission;
-          if (permission === 'granted') {
-            new Notification('Example! ', { body: 'soManyNotification' });
-          } else if (permission !== 'denied') {
-            Notification.requestPermission().then(function (result) {
-              if (result === 'granted') {
-                new Notification('Example! ', { body: 'soManyNotification' });
-              }
-            });
-          }
+          showNotification('Completed!', `${lastPomodoro.type.toString()} completed.`);
         }
       });
     case ActionType.SetTimeForPomodoroType: {
@@ -128,55 +121,6 @@ function reducer(state: State, action: Action): State {
 }
 
 const ONE_SECOND = 1000;
-
-const Pomodoro = ({ pomodoro }: { pomodoro: Pomodoro }): JSX.Element => {
-  let pomodoroType = '';
-  let className = '';
-  let icon;
-  switch (pomodoro.type) {
-    case PomodoroType.ShortBrake:
-      pomodoroType = 'Short Brake';
-      className = 'short-brake';
-      icon = 'faHeartbeat';
-      break;
-    case PomodoroType.LongBrake:
-      pomodoroType = 'Long Brake';
-      className = 'long-brake';
-      icon = 'faSnowboarding';
-      break;
-    default:
-      pomodoroType = 'Pomodoro';
-      className = 'pomodoro';
-      icon = 'faStopwatch';
-      break;
-  }
-  return (
-    <div className={cx(className, { completed: pomodoro.completed })}>
-      <div className={cx('pomodoro-title')}>
-        <img src={`/icons/${icon}`} />
-        {pomodoroType}
-      </div>
-      {!pomodoro.completed && (
-        <div>
-          <span className={cx('pomodoro-label')}>Remaining Time: </span>
-          <span className={cx('pomodoro-remaining')}>
-            {dayjs.duration(pomodoro.remainingTime * ONE_SECOND).format('mm:ss')}
-          </span>
-        </div>
-      )}
-      <div className={cx('pomodoro-value')}>
-        <span className={cx('pomodoro-label')}>Started At: </span>
-        {dayjs(pomodoro.startTime).format('HH:mm:ss')}
-      </div>
-      {pomodoro.completed && (
-        <div className={cx('pomodoro-value')}>
-          <span className={cx('pomodoro-label')}>Completed at: </span>
-          {dayjs(pomodoro.completeTime || new Date()).format('HH:mm:ss')}
-        </div>
-      )}
-    </div>
-  );
-};
 
 const PomodoroList = (): JSX.Element => {
   const [state, dispatch] = React.useReducer(reducer, initialState);

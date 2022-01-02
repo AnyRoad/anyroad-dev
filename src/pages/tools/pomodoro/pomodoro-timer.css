@@ -47,6 +47,10 @@
   border-radius: 10px;
 }
 
+.pomodoro-title-container {
+  @apply flex flex-row items-center;
+}
+
 .pomodoro-title {
   @apply font-bold text-lg subpixel-antialiased;
 }
@@ -65,4 +69,13 @@
 
 .pomodoro-icon {
   @apply pr-1;
+}
+
+.pomodoro-image {
+  margin-right: 10px;
+  margin: auto;
+}
+
+.pomodoro-image-container {
+  min-width: 94px;
 }
