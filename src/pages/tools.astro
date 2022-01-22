@@ -2,17 +2,35 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout>
-  <h2>Developer Tools</h2>
+<BaseLayout
+  seo={{
+    title: "AnyRoad's Development Tools",
+    description: 'Useful tools for Developers by AnyRoad',
+    openGraph: {
+      basic: {
+        title: "AnyRoad's Development Tools",
+        type: 'website',
+        image: '',
+        url: Astro.request.canonicalURL.href
+      }
+    }
+  }}
+>
+  <h2>🛠 Developer Tools</h2>
+  <p class="mb-5">
+    These are small dev tools I've created cause I found them practical in my daily work.
+    They all work only on the client-side and do not send any requests to any server
+    except the APIs needed for the logic itself.
+  </p>
   <ul>
     <li>
-      <a href="/tools/github-forks">GitHub Forks</a>
+      <a href="/tools/github-forks">GitHub Forks</a> - find who forked the GitHub repository.
     </li>
     <li>
-      <a href="/tools/json-view">Json View</a>
+      <a href="/tools/json-view">Json View</a> - format json string.
     </li>
     <li>
-      <a href="/tools/pomodoro">Pomodoro Timer</a>
+      <a href="/tools/pomodoro">Pomodoro Timer</a> - simple Pomodory technique implementation.
     </li>
   </ul>
 </BaseLayout>

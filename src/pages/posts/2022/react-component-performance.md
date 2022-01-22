@@ -1,9 +1,8 @@
 ---
 setup: |
-  import Layout from '../../layouts/BlogPost.astro'
-title: Hello world!
-publishDate: 12 Sep 2021
-name: Nate Moore
+  import Layout from '../../../layouts/BlogPost.astro'
+title: React Component Performance Benchmark
+publishDate: 02 Jan 2022
 value: 128
 description: Just a Hello World Post!
 ---

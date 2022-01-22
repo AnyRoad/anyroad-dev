@@ -1,11 +1,23 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 
-const { content } = Astro.props;
-const { title, description, image, permalink } = content;
+const { title, heroImage, permalink, description } = Astro.props.content;
 ---
 
-<BaseLayout {title} {image} {description} {permalink}>
+<BaseLayout
+  seo={{
+    title,
+    description,
+    openGraph: {
+      basic: {
+        title: title,
+        type: 'website',
+        image: heroImage || '',
+        url: permalink
+      }
+    }
+  }}
+>
   <div class="wrapper">
     <slot />
   </div>

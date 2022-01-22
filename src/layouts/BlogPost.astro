@@ -3,10 +3,24 @@ import BaseLayout from './BaseLayout.astro';
 import BlogPost from '../components/BlogPost.astro';
 
 const { content } = Astro.props;
-const { title, description, publishDate, heroImage, permalink, alt } = content;
+const { title, seo, publishDate, heroImage, alt, permalink, description } = content;
 ---
 
-<BaseLayout {title} image={heroImage} {description} {permalink}>
+<BaseLayout
+  seo={{
+    ...seo,
+    title,
+    description,
+    openGraph: {
+      basic: {
+        title: title,
+        type: 'website',
+        image: heroImage || '',
+        url: permalink
+      }
+    }
+  }}
+>
   <div class="wrapper">
     <BlogPost {title} {heroImage} {publishDate} {alt}>
       <slot />

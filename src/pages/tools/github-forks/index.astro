@@ -3,7 +3,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import GitHubForks from './github-forks.tsx';
 ---
 
-<BaseLayout title="Browse GitHub Forks" description="" permalink="" image={''}>
+<BaseLayout seo={{ title: 'Browse GitHub Forks' }}>
   <h2>Browse GitHub Forks</h2>
   <GitHubForks client:load />
 </BaseLayout>

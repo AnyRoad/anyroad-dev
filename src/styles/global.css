@@ -289,3 +289,32 @@ blockquote .source {
   color: var(--color);
   font-size: 1rem;
 }
+
+ul,
+menu {
+  list-style-type: disc;
+  margin-bottom: 1em;
+  padding: 0 0 0 20px;
+  list-style-position: inside;
+}
+
+ol {
+  list-style-type: decimal;
+  margin: 1em 0;
+  padding: 0 0 0 20px;
+  list-style-position: inside;
+}
+
+ul,
+ol {
+  ul {
+    list-style-type: circle;
+  }
+
+  ul,
+  ol {
+    ul {
+      list-style-type: square;
+    }
+  }
+}

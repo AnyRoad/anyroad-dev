@@ -3,7 +3,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Pomodoro from './pomodoro-timer.tsx';
 ---
 
-<BaseLayout title="Pomodoro timer" description="" permalink="" image={''}>
+<BaseLayout seo={{ title: 'Simple Pomodoro technique implementation' }}>
   <h2>Set Pomodoro Timer</h2>
   <Pomodoro client:load />
 </BaseLayout>

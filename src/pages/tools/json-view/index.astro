@@ -3,7 +3,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import JsonFormatter from './json-view.tsx';
 ---
 
-<BaseLayout title="View Json Data" description="" permalink="" image={''}>
+<BaseLayout seo={{ title: 'View Json Data' }}>
   <h2>View Json Data</h2>
   <JsonFormatter client:load />
 </BaseLayout>
