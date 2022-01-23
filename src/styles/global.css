@@ -133,23 +133,23 @@ nav ul {
 }
 
 h1 {
-  font-size: clamp(2.488rem, 1.924rem + 1.41vw, 3.052rem);
+  font-size: clamp(1.99rem, 1.539rem + 1.128vw, 2.442rem);
 }
 
 h2 {
-  font-size: clamp(2.074rem, 1.707rem + 0.9175vw, 2.441rem);
+  font-size: clamp(1.659rem, 1.366rem + 0.734vw, 1.953rem);
 }
 
 h3 {
-  font-size: clamp(1.728rem, 1.503rem + 0.5625vw, 1.953rem);
+  font-size: clamp(1.382rem, 1.202rem + 0.45vw, 1.562rem);
 }
 
 h4 {
-  font-size: clamp(1.44rem, 1.317rem + 0.3075vw, 1.563rem);
+  font-size: clamp(1.152rem, 1.054rem + 0.246vw, 1.25rem);
 }
 
 h5 {
-  font-size: clamp(1.2rem, 1.15rem + 0.125vw, 1.25rem);
+  font-size: clamp(0.96rem, 0.92rem + 0.1vw, 1rem);
 }
 
 p {
@@ -316,5 +316,15 @@ ol {
     ul {
       list-style-type: square;
     }
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  body {
+    font-size: 1.25rem;
+  }
+  .wrapper {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
 }
