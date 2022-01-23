@@ -24,25 +24,28 @@ export type PomodoroInfo = {
   remainingTime: number;
 };
 
+export const titleByPomodoroType = new Map([
+  [PomodoroType.Pomodoro, 'Pomodoro'],
+  [PomodoroType.ShortBrake, 'Short Brake'],
+  [PomodoroType.LongBrake, 'Long Brake']
+]);
+
 const ONE_SECOND = 1000;
 
-const Pomodoro = ({ pomodoro }: { pomodoro: Pomodoro }): JSX.Element => {
-  let pomodoroType = '';
+const Pomodoro = ({ pomodoro }: { pomodoro: PomodoroInfo }): JSX.Element => {
+  let pomodoroType = titleByPomodoroType.get(pomodoro.type) || '';
   let className = '';
   let icon;
   switch (pomodoro.type) {
     case PomodoroType.ShortBrake:
-      pomodoroType = 'Short Brake';
       className = 'short-brake';
       icon = 'coffee-mug';
       break;
     case PomodoroType.LongBrake:
-      pomodoroType = 'Long Brake';
       className = 'long-brake';
       icon = 'food-and-drink';
       break;
     default:
-      pomodoroType = 'Pomodoro';
       className = 'pomodoro';
       icon = 'working-hours';
       break;
