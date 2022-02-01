@@ -1,12 +1,10 @@
 ---
 setup: |
   import Layout from '../layouts/Markdown.astro'
-title: AnyRoad's - About me
+title: 🤝 About me
 description: About AnyRoad. My name is Andy.
 permalink: https://anyroad.dev/
 ---
-
-# About me
 
 Hi! My name is Andy, and this is my personal website.
 <br/>
@@ -16,7 +14,8 @@ I have been developing software for more than 17 years. I started with Desktop a
 <br/>
 
 🇰🇷 Live in South Korea
-
+<br/>
+<br/>
 👨‍💻 In the office:
 
 - 🚀 Work in [Coupang](https://www.coupang.jobs/en/why-coupang/) - the world's fastest-growing e-commerce company
@@ -26,6 +25,8 @@ I have been developing software for more than 17 years. I started with Desktop a
 - ⚡ Hate waste and always try to improve the current solution ([Fix Like No One's Watching](https://overreacted.io/fix-like-no-ones-watching/))
 - 👀 Look at cutting-edge technology but understand that we cannot apply it all in production
 - 💭 Like working in a team to support each other to get the best result
+
+<br/>
 
 🎉 Outside of work:
 

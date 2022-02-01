@@ -19,6 +19,12 @@
     "dayjs": "1.10.7",
     "react-json-view-lite": "^0.9.4",
     "immer": "9.0.12",
-    "astro-seo": "^0.4.2"
+    "astro-seo": "^0.4.2",
+    "remark-code-titles": "^0.1.2",
+    "rehype-autolink-headings": "^6.1.1",
+    "rehype-toc": "^3.0.2",
+    "rehype-slug": "^5.0.1",
+    "hast-util-select": "^5.0.1",
+    "@mapbox/rehype-prism": "^0.8.0"
   }
 }

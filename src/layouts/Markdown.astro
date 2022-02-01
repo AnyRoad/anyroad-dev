@@ -19,6 +19,7 @@ const { title, heroImage, permalink, description } = Astro.props.content;
   }}
 >
   <div class="wrapper">
+    <h1>{title}</h1>
     <slot />
   </div>
 </BaseLayout>

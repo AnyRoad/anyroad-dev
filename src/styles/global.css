@@ -222,39 +222,6 @@ code:not([class*='language']) {
   word-break: break-word;
 }
 
-pre > code:not([class*='language']) {
-  background-color: transparent;
-  padding: 0;
-  margin: 0;
-  border-radius: 0;
-  color: inherit;
-}
-
-pre {
-  position: relative;
-  background-color: var(--theme-code-bg);
-  color: var(--theme-code-text);
-  --padding-block: 1rem;
-  --padding-inline: 2rem;
-  padding: var(--padding-block) var(--padding-inline);
-  padding-right: calc(var(--padding-inline) * 2);
-  margin-left: calc(50vw - var(--padding-inline));
-  transform: translateX(-50vw);
-
-  line-height: 1.414;
-  width: calc(100vw + (var(--padding-inline) * 2));
-  max-width: calc(100% + (var(--padding-inline) * 2));
-  overflow-y: hidden;
-  overflow-x: auto;
-}
-
-@media (min-width: 37.75em) {
-  pre {
-    --padding-inline: 1.25rem;
-    border-radius: 8px;
-  }
-}
-
 .flex {
   display: flex;
   align-items: center;
@@ -293,14 +260,12 @@ blockquote .source {
 ul,
 menu {
   list-style-type: disc;
-  margin-bottom: 1em;
   padding: 0 0 0 20px;
   list-style-position: inside;
 }
 
 ol {
   list-style-type: decimal;
-  margin: 1em 0;
   padding: 0 0 0 20px;
   list-style-position: inside;
 }
@@ -327,4 +292,11 @@ ol {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
   }
+}
+
+:target::before {
+  content: '';
+  display: block;
+  height: 95px; /* fixed header height*/
+  margin: -95px 0 0; /* negative fixed header height */
 }

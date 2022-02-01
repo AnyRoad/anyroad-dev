@@ -2,6 +2,17 @@
 import BaseLayout from './BaseLayout.astro';
 import BlogPost from '../components/BlogPost.astro';
 
+import 'prismjs/components/prism-javascript';
+import 'prismjs/components/prism-typescript';
+import 'prismjs/components/prism-jsx';
+import 'prismjs/components/prism-tsx';
+import 'prismjs/components/prism-java';
+import 'prismjs/components/prism-kotlin';
+import 'prismjs/components/prism-go';
+import 'prismjs/components/prism-css';
+import 'prismjs/components/prism-bash';
+import 'prismjs/themes/prism-coy.css';
+
 const { content } = Astro.props;
 const { title, seo, publishDate, heroImage, alt, permalink, description } = content;
 ---
