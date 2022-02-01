@@ -37,6 +37,8 @@
   --color-red-rgb: 255, 22, 57;
   --color-yellow: #ffbe2d;
   --color-yellow-rgb: 255, 190, 45;
+
+  --header-header: 80px;
 }
 
 :root {
@@ -297,6 +299,6 @@ ol {
 :target::before {
   content: '';
   display: block;
-  height: 95px; /* fixed header height*/
-  margin: -95px 0 0; /* negative fixed header height */
+  height: var(--header-header); /* fixed header height*/
+  margin: -var(--header-header) 0 0; /* negative fixed header height */
 }
