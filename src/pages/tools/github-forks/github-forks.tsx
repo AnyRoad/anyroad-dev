@@ -20,10 +20,7 @@ function formatNumber(num: number): string {
 
 const githubApi = new GitHubApis.GitHubApi();
 
-const RepositoryRow = ({
-  repository,
-  mainRepo = false,
-}: RepositoryRowProps): JSX.Element => {
+const RepositoryRow = ({ repository, mainRepo = false }: RepositoryRowProps): JSX.Element => {
   return (
     <tr className={cx({ 'main-repo': mainRepo })}>
       <td>
@@ -31,30 +28,24 @@ const RepositoryRow = ({
         <span>{repository.owner.login}</span>
       </td>
       <td>
-        <a target="_blank" rel="noreferrer" href={repository.svn_url}>
+        <a target='_blank' rel='noreferrer' href={repository.svn_url}>
           {repository.name}
         </a>
       </td>
-      <td className={styles.center}>{repository.default_branch}</td>
-      <td className={styles.center}>{repository.stargazers_count}</td>
-      <td className={styles.center}>{repository.forks_count}</td>
-      <td className={styles.center}>{repository.open_issues_count}</td>
-      <td className={styles.right}>{formatNumber(repository.size)}</td>
-      <td className={styles.right}>
-        {dayjs(repository.pushed_at, 'YYYY-MM-DDTHH:mm:ssZ').fromNow()}
-      </td>
-      <td className={styles.right}>
-        {dayjs(repository.created_at, 'YYYY-MM-DDTHH:mm:ssZ').fromNow()}
-      </td>
+      <td className={cx('center')}>{repository.default_branch}</td>
+      <td className={cx('center')}>{repository.stargazers_count}</td>
+      <td className={cx('center')}>{repository.forks_count}</td>
+      <td className={cx('center')}>{repository.open_issues_count}</td>
+      <td className={cx('right')}>{formatNumber(repository.size)}</td>
+      <td className={cx('right')}>{dayjs(repository.pushed_at, 'YYYY-MM-DDTHH:mm:ssZ').fromNow()}</td>
+      <td className={cx('right')}>{dayjs(repository.created_at, 'YYYY-MM-DDTHH:mm:ssZ').fromNow()}</td>
     </tr>
   );
 };
 
 const Forks = (): JSX.Element => {
   const [forks, setData] = React.useState([] as GitHubApis.GitHubTypes.Repository[]);
-  const [originalRepo, setOriginalRepo] = React.useState(
-    null as GitHubApis.GitHubTypes.Repository | null,
-  );
+  const [originalRepo, setOriginalRepo] = React.useState(null as GitHubApis.GitHubTypes.Repository | null);
   const [errorText, setErrorText] = React.useState('');
   const [targetRepo, setTargetRepo] = React.useState('');
   const [sortingField, setSortingField] = React.useState('stargazers');
@@ -65,22 +56,14 @@ const Forks = (): JSX.Element => {
       setErrorText('Please input repository in format "author/repository".');
       return;
     }
-    const [originalApiResult, error, originalRepoInfo] = await githubApi.getRepo(
-      author,
-      repo,
-    );
+    const [originalApiResult, error, originalRepoInfo] = await githubApi.getRepo(author, repo);
     if (originalApiResult != GitHubApis.ApiCallResult.Success) {
       setErrorText(error);
       return;
     }
     setOriginalRepo(originalRepoInfo);
 
-    const [forksApiResult, forksError, forksInfo] = await githubApi.getForks(
-      author,
-      repo,
-      sortingField,
-      100,
-    );
+    const [forksApiResult, forksError, forksInfo] = await githubApi.getForks(author, repo, sortingField, 100);
 
     if (forksApiResult != GitHubApis.ApiCallResult.Success) {
       setErrorText(forksError);
@@ -98,13 +81,13 @@ const Forks = (): JSX.Element => {
 
   return (
     <>
-      <div className="grid gap-4 md:grid-cols-2 grid-cols-1">
+      <div className='grid gap-4 md:grid-cols-2 grid-cols-1'>
         <div>
-          <label htmlFor="repository" className={cx('label')}>
+          <label htmlFor='repository' className={cx('label')}>
             Repository
           </label>
           <input
-            id="repository"
+            id='repository'
             className={cx('repo-input')}
             value={targetRepo}
             onChange={(e) => setTargetRepo(e.target.value)}
@@ -112,18 +95,18 @@ const Forks = (): JSX.Element => {
           />
         </div>
         <div>
-          <label htmlFor="sorting" className={cx('label')}>
+          <label htmlFor='sorting' className={cx('label')}>
             Sort by
           </label>
 
           <select
-            id="sorting"
+            id='sorting'
             className={cx('sort-selector')}
             onChange={(e) => setSortingField(e.target.value)}
           >
-            <option value="stargazers">More stars</option>
-            <option value="newest">Newly created</option>
-            <option value="oldest">Oldiest</option>
+            <option value='stargazers'>More stars</option>
+            <option value='newest'>Newly created</option>
+            <option value='oldest'>Oldiest</option>
           </select>
         </div>
       </div>
@@ -132,11 +115,9 @@ const Forks = (): JSX.Element => {
           Find Forks
         </button>
       </div>
-      {errorText && errorText.length > 0 && (
-        <div className={cx('error-label')}>{errorText}</div>
-      )}
-      <div className="flex">
-        <table className={styles['forks-table']}>
+      {errorText && errorText.length > 0 && <div className={cx('error-label')}>{errorText}</div>}
+      <div className='flex'>
+        <table className={cx('forks-table')}>
           <thead>
             <tr>
               <th>User</th>
