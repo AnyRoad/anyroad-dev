@@ -236,7 +236,7 @@ img.cover {
 }
 
 blockquote {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   --padding-block: 1rem;
   --padding-inline: 1.25rem;
   --color: var(--theme-divider);
@@ -294,6 +294,12 @@ ol {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
   }
+}
+
+.toc-level-2,
+.toc-item-h3 {
+  margin-left: 20px;
+  list-style: disc;
 }
 
 :target::before {

@@ -19,7 +19,17 @@ export default /** @type {import('astro').AstroUserConfig} */ ({
         rehypePlugins: [
           'rehype-slug',
           ['rehype-autolink-headings', { behavior: 'before' }],
-          ['rehype-toc', { headings: ['h2', 'h3'] }],
+          [
+            'rehype-toc',
+            {
+              headings: ['h2', 'h3'],
+              customizeTOCItem: (toc) =>
+                toc.children &&
+                toc.children.forEach((child) => {
+                  if (child.tagName === 'ol') child.tagName = 'ul';
+                })
+            }
+          ],
           [
             new URL('./add-classes.mjs', import.meta.url).pathname,
             { 'h1,h2,h3': 'title' }
