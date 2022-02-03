@@ -1,5 +1,5 @@
 # AnyRoad's personal web-site
 
-http://anyroad.dev
+https://anyroad.dev
 
 Made with [AstroBuild JS](https://docs.astro.build/)

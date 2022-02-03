@@ -3,13 +3,12 @@
 @tailwind utilities;
 
 :root {
-  --font-fallback: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial,
-    sans-serif, Apple Color Emoji, Segoe UI Emoji;
+  --font-fallback: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif,
+    Apple Color Emoji, Segoe UI Emoji;
   --font-body: 'IBM Plex Sans', var(--font-fallback);
-  --font-mono: 'IBM Plex Mono', Consolas, 'Andale Mono WT', 'Andale Mono',
-    'Lucida Console', 'Lucida Sans Typewriter', 'DejaVu Sans Mono',
-    'Bitstream Vera Sans Mono', 'Liberation Mono', 'Nimbus Mono L', Monaco, 'Courier New',
-    Courier, monospace;
+  --font-mono: 'IBM Plex Mono', Consolas, 'Andale Mono WT', 'Andale Mono', 'Lucida Console',
+    'Lucida Sans Typewriter', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Liberation Mono',
+    'Nimbus Mono L', Monaco, 'Courier New', Courier, monospace;
 
   --color-white: #fff;
   --color-black: #000014;
@@ -38,7 +37,7 @@
   --color-yellow: #ffbe2d;
   --color-yellow-rgb: 255, 190, 45;
 
-  --header-header: 80px;
+  --header-header: 40px;
 }
 
 :root {
@@ -302,9 +301,20 @@ ol {
   list-style: disc;
 }
 
-:target::before {
-  content: '';
-  display: block;
-  height: var(--header-header); /* fixed header height*/
-  margin: -var(--header-header) 0 0; /* negative fixed header height */
+.topnav-header {
+  @apply bg-white fixed z-50 w-full px-5 py-2 flex justify-evenly items-center;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  max-width: 65em;
+  height: var(--header-header);
+  padding-bottom: 15px;
+  border-bottom: 1px solid lightgray;
+  transition: top 0.5s ease-in-out;
+}
+
+h2,
+h3 {
+  scroll-margin-top: var(--header-header);
 }

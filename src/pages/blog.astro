@@ -12,9 +12,7 @@ let description = 'Random thoughts of full-stack developer.';
 
 // Data Fetching: List all Markdown posts in the repo.
 let allPosts = await Astro.fetchContent('./posts/2022/*.md');
-allPosts = allPosts.sort(
-  (a, b) => new Date(b.publishDate).valueOf() - new Date(a.publishDate).valueOf()
-);
+allPosts = allPosts.sort((a, b) => new Date(b.publishDate).valueOf() - new Date(a.publishDate).valueOf());
 ---
 
 <BaseLayout
@@ -32,8 +30,7 @@ allPosts = allPosts.sort(
   }}
 >
   <section class="intro">
-    <h1 class="latest">🚏 {title}</h1>
-    <p>{description}</p>
+    <h1 class="latest">📝 {title}</h1>
   </section>
   <section aria-label="Blog post list">
     {allPosts.map((p) => <BlogPostPreview post={p} />)}

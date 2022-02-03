@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import BlogPost from '../components/BlogPost.astro';
+import dayjs from 'dayjs';
 
 import 'prismjs/components/prism-javascript';
 import 'prismjs/components/prism-typescript';
@@ -14,7 +15,9 @@ import 'prismjs/components/prism-bash';
 import '../styles/prism.css';
 
 const { content } = Astro.props;
-const { title, seo, publishDate, heroImage, alt, permalink, description } = content;
+const { title, seo, publishDate, heroImage, alt, permalink, description, tags, ogTitle } = content;
+
+const publishDateLongFormat = dayjs(publishDate, 'YYYY-MM-DD').format('DD MMM YYYY');
 ---
 
 <BaseLayout
@@ -24,16 +27,32 @@ const { title, seo, publishDate, heroImage, alt, permalink, description } = cont
     description,
     openGraph: {
       basic: {
-        title: title,
-        type: 'website',
+        title: ogTitle,
+        type: 'article',
         image: heroImage || '',
         url: permalink
+      },
+      article: {
+        publishedTime: publishDate,
+        author: 'anyroad.dev',
+        section: 'programming',
+        tags: tags
+      },
+      optional: {
+        description: description,
+        locale: 'en_US',
+        localeAlternate: ['en_GB']
       }
+    },
+    twitter: {
+      card: 'summary',
+      site: '@anyroaddev',
+      creator: '@anyroaddev'
     }
   }}
 >
   <div class="wrapper">
-    <BlogPost {title} {heroImage} {publishDate} {alt}>
+    <BlogPost {title} {heroImage} publishDate={publishDateLongFormat} {alt}>
       <slot />
     </BlogPost>
   </div>

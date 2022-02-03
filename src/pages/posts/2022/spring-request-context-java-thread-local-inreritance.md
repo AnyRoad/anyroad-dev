@@ -2,8 +2,8 @@
 setup: |
   import Layout from '../../../layouts/BlogPost.astro'
 title: Thread Local Inheritance and Spring RequestContextHolder
-publishDate: 02 Feb 2022
-description: Java thread local inheritance
+publishDate: '2022-02-03'
+description: Spring has RequestContextHolder which allows to share information related to http request using ThreadLocal variable but can we use it in the real applications which have Thread Pools?
 tags:
   [
     'java',
@@ -14,6 +14,7 @@ tags:
     'RequestContextHolder',
     'transmittable-thread-local'
   ]
+ogTitle: Spring has RequestContextHolder which allows to share information related to http request using ThreadLocal variable but can we use it in the real applications which have Thread Pools?
 ---
 
 ## Spring MVC RequestContextHolder
