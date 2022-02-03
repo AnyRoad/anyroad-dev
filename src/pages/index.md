@@ -1,7 +1,8 @@
 ---
 setup: |
   import Layout from '../layouts/Markdown.astro'
-title: 🤝 About me
+title: About me
+header: 🤝 About me
 description: About AnyRoad. My name is Andy.
 permalink: https://anyroad.dev/
 ---

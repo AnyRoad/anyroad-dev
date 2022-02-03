@@ -2,7 +2,8 @@
 setup: |
   import Layout from '../layouts/Markdown.astro'
   import { JsonView } from 'react-json-view-lite';
-title: 👨‍💻 AnyRoad's projects
+title: AnyRoad's projects
+header: 👨‍💻 AnyRoad's projects
 description: List of my projects
 permalink: https://anyroad.dev/projects
 ---
