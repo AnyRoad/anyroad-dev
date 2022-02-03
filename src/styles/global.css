@@ -318,3 +318,9 @@ h2,
 h3 {
   scroll-margin-top: var(--header-header);
 }
+
+@media (max-width: 600px) {
+  .header-icon {
+    display: none;
+  }
+}
