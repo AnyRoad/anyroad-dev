@@ -17,11 +17,17 @@ tags:
 ogTitle: Spring has RequestContextHolder which allows to share information related to http request using ThreadLocal variable but can we use it in the real applications which have Thread Pools?
 ---
 
+## Overview
+
+Problem statement
+
 ## Spring MVC RequestContextHolder
+
+### Investigation
 
 [Spring Docs](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/context/request/RequestContextHolder.html)
 
-> Holder class to expose the web request in the form of a thread-bound RequestAttributes object. The request will be inherited by any child threads spawned by the current thread if the **inheritable flag** is set to true.
+> RequestContextHolder is holder class to expose the web request in the form of a thread-bound RequestAttributes object. The request will be inherited by any child threads spawned by the current thread if the **inheritable flag** is set to true.
 
 So you can get information about web request in any class:
 
@@ -79,11 +85,84 @@ DispatcherServlet dispatcherServlet = context.getBean(DispatcherServlet.class);
 dispatcherServlet.setThreadContextInheritable(true);
 ```
 
+### Tests
+
+For the tests let's create simple controller which sets `Attribute` and tries to read it's value in child Thread. For each http request Attribute's value is updated with `AtomicInteger` so it will never be the same.
+Full source code is available [here](https://github.com/AnyRoad/sandbox/tree/main/inheritable-thread-local/src/main/java/dev/anyroad/spring/context/test)
+
+```java
+public class ControllerResult {
+    private int parentThreadValue;
+    private int childThreadValue;
+    private boolean childThreadHasSameRequestAttributes;
+    private boolean success;
+    private String execptionMessage;
+}
+
+@RestController
+public abstract class Controller {
+  private final static String ATTRIBUTE_NAME = "incremented number";
+  private final static int SCOPE = RequestAttributes.SCOPE_REQUEST;
+
+  private final Executor threadPool;
+  private final AtomicInteger counter = new AtomicInteger(0);
+
+  public Controller(Executor threadPool) {
+      this.threadPool = threadPool;
+  }
+
+  @GetMapping("/one-level-child-thread")
+  public ControllerResult oneLevel() throws ExecutionException, InterruptedException {
+      RequestAttributes originalRequestAttributes = getRequestAttributes();
+      int counterValue = counter.incrementAndGet();
+
+      originalRequestAttributes.setAttribute(ATTRIBUTE_NAME, counterValue, SCOPE);
+      counterValue = (int) originalRequestAttributes.getAttribute(ATTRIBUTE_NAME, SCOPE);
+
+      CompletableFuture<RequestAttributes> requestFuture =
+              CompletableFuture.supplyAsync(this::getRequestAttributes, threadPool);
+
+      return buildResponse(requestFuture, counterValue, originalRequestAttributes);
+  }
+}
+```
+
+and then create simple test which verifies that value is the same only 2 first times for the Thread Pool which has at most 2 threads. Full source code for tests is available on [GitHub](https://github.com/AnyRoad/sandbox/tree/main/inheritable-thread-local/src/test/java/dev/anyroad/spring/context/test/transmittable)
+
+```java
+@SpringBootTest(classes = {
+        ReleaseVersionApp.class
+}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestPropertySource(properties = "threadContextInheritable=true")
+class InheritableThreadLocalInheritableTest extends BaseMvcTest {
+
+  @Test
+  public void shouldInheritThreadLocalOnly2Times() {
+      for (int i = 1; i <= 2; ++i) {
+          ControllerResult response = callApi("/one-level-child-thread");
+          assertTrue(response.isSuccess());
+      }
+      // after both threads are created values is not updated anymore and original Request in the
+      // Context is not valid
+      for (int i = 1; i <= 2; ++i) {
+          ControllerResult response = callApi("/one-level-child-thread");
+          assertFalse(response.isSuccess());
+      }
+  }
+}
+```
+
+Since Thread Pool can create up to 2 Threads value is the same only 2 first times and all further request do not get updated value.
+
+Test succeeds that means that `RequestContextHolder` does not work well with Thread Pool.
+
+Now let's look how InheritableThreadLocal works.
+
 ## InheritableThreadLocal
 
 ### Dive deep in code
 
-Now let's look how InheritableThreadLocal works. Each Java `Thread` has two variables - `threadLocals` and `inheritableThreadLocals`:
+Each Java `Thread` has two variables - `threadLocals` and `inheritableThreadLocals`:
 
 ```java:Thread.java
 /* ThreadLocal values pertaining to this thread. This map is maintained
@@ -343,3 +422,7 @@ Now second `Runnable` sumbitted to the single-thread Thread Pool got updated Thr
 Everything works as expected. Full test code can be found on [GitHub](https://github.com/AnyRoad/sandbox/blob/main/inheritable-thread-local/src/test/java/dev/anyroad/threadlocal/TransmittableThreadLocalTest.java)
 
 ## Integratting Transmittable Thread Local to Spring
+
+Unfortunately `RequestContextHolder` has only static methods and used directly in the `FrameworkServlet` so it is not so easy to change `RequestContextHolder` logic to use `TransmittableThreadLocal`. Some methods of `FrameworkServlet` which uses `RequestContextHolder` are `protected final` (like `processRequest`) so we have to override higher level methods and in the end too many places will be touched.
+
+Seems like only one effective way is to copy the whole `FrameworkServlet`, `RequestContextHolder` and `DispatcherServlet` source code and change the `NamedInheritableThreadLocal` to `TransmittableThreadLocal`.
