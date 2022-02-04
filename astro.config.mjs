@@ -18,7 +18,7 @@ export default /** @type {import('astro').AstroUserConfig} */ ({
         remarkPlugins: ['remark-code-titles'],
         rehypePlugins: [
           'rehype-slug',
-          ['rehype-autolink-headings', { behavior: 'before' }],
+          ['rehype-autolink-headings', { behavior: 'append' }],
           [
             'rehype-toc',
             {
@@ -30,10 +30,7 @@ export default /** @type {import('astro').AstroUserConfig} */ ({
                 })
             }
           ],
-          [
-            new URL('./add-classes.mjs', import.meta.url).pathname,
-            { 'h1,h2,h3': 'title' }
-          ],
+          [new URL('./add-classes.mjs', import.meta.url).pathname, { 'h1,h2,h3': 'title' }],
           '@mapbox/rehype-prism'
         ]
       }

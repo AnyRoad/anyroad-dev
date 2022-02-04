@@ -328,3 +328,33 @@ h3 {
 .content p {
   text-align: justify;
 }
+
+h2:hover .icon.icon-link:before,
+h3:hover .icon.icon-link:before {
+  content: '#';
+  font-size: 0.85em;
+  display: inline-block;
+  padding-top: 0.1em;
+  padding-left: 0.2em;
+}
+
+.icon.icon-link {
+  color: rgba(0, 0, 0, 0.2);
+}
+
+.icon.icon-link:hover {
+  color: #4d774e;
+}
+
+h2:hover a:focus,
+h2:hover a:active,
+h3:hover a:focus,
+h3:hover a:active {
+  outline: none;
+  -moz-outline-style: none;
+}
+
+.icon.icon-link {
+  line-height: inherit;
+  text-decoration: none;
+}
