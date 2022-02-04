@@ -1,7 +1,7 @@
 ---
 setup: |
   import Layout from '../../../layouts/BlogPost.astro'
-title: Thread Local Inheritance and Spring RequestContextHolder
+title: Spring RequestContextHolder and Thread Local Inheritance
 publishDate: '2022-02-03'
 description: Spring has RequestContextHolder which allows to share information related to http request using ThreadLocal variable but can we use it in the real applications which have Thread Pools?
 tags:
@@ -14,12 +14,14 @@ tags:
     'RequestContextHolder',
     'transmittable-thread-local'
   ]
-ogTitle: Spring has RequestContextHolder which allows to share information related to http request using ThreadLocal variable but can we use it in the real applications which have Thread Pools?
+ogTitle: How RequestContextHolder works and how it can be used together with Thread Pools.
 ---
 
 ## Overview
 
-Problem statement
+Recently I faced the problem when the library was developed by another team did not work as expected in our REST API microservice. After the source code investigation, we realized that the problem is related to the RequestContextHolder. The library relies on RequestContextHolder to get HTTP request-related information which implementation uses thread-local variables. This means it will work well when we have just one thread that processes the request end to end. But in our microservice, we use separate Thread Pools for Spring service beans with set-up timeouts and rate limiters.
+
+The complete source code for fragments below is available [on GitHub](https://github.com/AnyRoad/sandbox/tree/main/inheritable-thread-local/src).
 
 ## Spring MVC RequestContextHolder
 
@@ -29,7 +31,7 @@ Problem statement
 
 > RequestContextHolder is holder class to expose the web request in the form of a thread-bound RequestAttributes object. The request will be inherited by any child threads spawned by the current thread if the **inheritable flag** is set to true.
 
-So you can get information about web request in any class:
+So you can get information about web requests in any class:
 
 ```java
 ServletRequestAttributes requestAttributes =
@@ -39,7 +41,7 @@ servletRequest.getHeader("my-header");
 servletRequest.getCookies();
 ```
 
-`RequestContextHolder` uses `ThreadLocal` and `InheritableThreadLocal` to store the value associated with every thread. Based the `inheritable` flag class uses one or another.
+`RequestContextHolder` uses `ThreadLocal` and `InheritableThreadLocal` to store the value associated with every thread. Based the `inheritable` flag, the class uses one or another.
 
 ```java:RequestContextHolder.java
 public abstract class RequestContextHolder  {
@@ -77,7 +79,7 @@ public abstract class RequestContextHolder  {
 }
 ```
 
-The flag is member of the parent `DispatcherServlet` class. It can be set directly on the bean of DispatcherServlet:
+The flag is a member of the parent `DispatcherServlet` class. We can set it directly on the bean of DispatcherServlet:
 
 ```java
 ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
@@ -85,12 +87,13 @@ DispatcherServlet dispatcherServlet = context.getBean(DispatcherServlet.class);
 dispatcherServlet.setThreadContextInheritable(true);
 ```
 
+`setThreadContextInheritable` seems just like what we need. But would this implementation inherit the ThreadLocal values for a real-world environment where we don't create thread directly but re-use threads provided by Thread Pools?
+
 ### Tests
 
-For the tests let's create simple controller which sets `Attribute` and tries to read it's value in child Thread. For each http request Attribute's value is updated with `AtomicInteger` so it will never be the same.
-Full source code is available [here](https://github.com/AnyRoad/sandbox/tree/main/inheritable-thread-local/src/main/java/dev/anyroad/spring/context/test)
+For the test, let's create a simple controller which sets Attribute and tries to read its value in child Thread. For each HTTP request Attribute, we set the value using `AtomicInteger`, so it will never be the same.
 
-```java
+```java:Controller.java
 public class ControllerResult {
     private int parentThreadValue;
     private int childThreadValue;
@@ -127,9 +130,9 @@ public abstract class Controller {
 }
 ```
 
-and then create simple test which verifies that value is the same only 2 first times for the Thread Pool which has at most 2 threads. Full source code for tests is available on [GitHub](https://github.com/AnyRoad/sandbox/tree/main/inheritable-thread-local/src/test/java/dev/anyroad/spring/context/test/transmittable)
+And then let's create a simple test that verifies that value is the same only two first times for the Thread Pool, which has at most two threads.
 
-```java
+```java:InheritableThreadLocalInheritableTest.java
 @SpringBootTest(classes = {
         ReleaseVersionApp.class
 }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -152,11 +155,11 @@ class InheritableThreadLocalInheritableTest extends BaseMvcTest {
 }
 ```
 
-Since Thread Pool can create up to 2 Threads value is the same only 2 first times and all further request do not get updated value.
+Since Thread Pool can create only up to two Threads, the value is the same only two first times, and all further requests do not get the updated value.
 
-Test succeeds that means that `RequestContextHolder` does not work well with Thread Pool.
+The test succeeds, which means that `RequestContextHolder` does not work well with Thread Pool.
 
-Now let's look how InheritableThreadLocal works.
+Now let's look at how InheritableThreadLocal works.
 
 ## InheritableThreadLocal
 
@@ -176,9 +179,8 @@ ThreadLocal.ThreadLocalMap threadLocals = null;
 ThreadLocal.ThreadLocalMap inheritableThreadLocals = null;
 ```
 
-ThreadLocalMap is special implementation of `Hash Map` where key is `ThreadLocal<?> k` and value is `Object v` designed only for the `ThreadLocal`. It does not follow the same collision resolution technique as the HashMap but simply put value to the next available slot.
-
-How we can get and set `ThreadLocal` value for the current thread?
+ThreadLocalMap is a special implementation of `Hash Map` where the key is `ThreadLocal<?> k` and value is `Object v` designed only for the ThreadLocal. It does not follow the same collision resolution technique as the `HashMap` but simply puts value on the next available slot.
+How we can get and set ThreadLocal value for the current thread?
 
 ```java:ThreadLocal.java
 public void set(T value) {
@@ -206,7 +208,7 @@ public T get() {
 }
 ```
 
-both methods first get the `ThreadLocalMap` for current Thread and then get the value based on `this` as `ThreadLocal`. The only one difference is how we get the `ThreadLocalMap`:
+Both methods first get the `ThreadLocalMap` for the current thread and then get the value based on `this` as ThreadLocal. The only difference is how we get the `ThreadLocalMap`:
 
 ```java:InheritableThreadLocal.java
 ThreadLocalMap getMap(Thread t) {
@@ -220,7 +222,7 @@ ThreadLocalMap getMap(Thread t) {
 }
 ```
 
-Now let's find how `inheritThreadLocals` is created. Constructor of the `Thread` class has `inheritThreadLocals` parameter which is `true` by default for public constructors:
+Now let's find how `inheritThreadLocals` is created. The Constructor of the `Thread` class has the `inheritThreadLocals` parameter which is `true` by default for public constructors:
 
 ```java:Thread.java
 private Thread(ThreadGroup g, Runnable target, String name,
@@ -240,15 +242,15 @@ public Thread(ThreadGroup group, Runnable target, String name,
 }
 ```
 
-When `inheritThreadLocals` is true the `inheritableThreadLocals` is created for the new Thread based on the values of the `parent` (current) thread. It means that the **`inheritableThreadLocals` value is created only one time and Thread never syncs `inheritableThreadLocals` back with parent Thread**. Because of that changes in the parent Thread `inheritableThreadLocals` are not reflected. But `ThreadLocal.createInheritedMap` **does not perform "deep copy"** so changes in the ThreadLocal values themselves will be visible to the child Thread.
+When `inheritThreadLocals` is true, constructor creates the `inheritableThreadLocals` based on the values of the `parent` (current) thread. It means that the thread copies the **`inheritableThreadLocals` value only one time and never syncs `inheritableThreadLocals` back with parent thread**. Because of that, changes in the parent thread `inheritableThreadLocals` are not reflected. But `ThreadLocal.createInheritedMap` **does not perform "deep copy"**, so changes in the ThreadLocal values themselves will be visible to the child Thread.
 
-So based on the source code analysis `InheritableThreadLocal` will not work well with Thread Pools where Thread can be re-used for the next task.
+Based on the source code analysis, `InheritableThreadLocal` will not work well with Thread Pools, where we can re-use the thread for the next task.
 
 ### Tests
 
-Now let's verify our findings with unit tests. Full test code can be found on [GitHub](https://github.com/AnyRoad/sandbox/blob/main/inheritable-thread-local/src/test/java/dev/anyroad/threadlocal/InheritedThreadLocalTest.java)
+Now let's verify our findings with unit tests.
 
-```java
+```java:InheritedThreadLocalTest.java
 @Test
 @DisplayName("Second runnable submitted to Thread Pool does not get updated value")
 public void InheritableThreadLocalWithThreadPoolSecondRunnable()
@@ -281,15 +283,11 @@ public void InheritableThreadLocalWithThreadPoolSecondRunnable()
 }
 ```
 
-We create single-thread Thread Pool so at most 1 Thread should be created. Then we submit first Runnable and wait until it will finish.
-In that Runnable we get ThreadLocal value and save it in the `dataFromChildThread`.
-Thread Pool creates new thread and copies the `inheritableThreadLocals` from parent thread.
+We create a single-thread Thread Pool so at most one thread should be created. Then we submit first Runnable and wait until it will finish. In that Runnable, we get ThreadLocal value and save it in the dataFromChildThread. Thread Pool creates a new thread and copies the `inheritableThreadLocals` from the parent thread.
+Then we change ThreadLocal value and submit the second Runnable which has the same logic. This time no new Thread will be created and the Thread Pool will re-use the existing Thread. If `InheritableThreadLocal` can refresh the value each time we would see updated value from the second Runnable. But the test succeeded and it means that we still got the original data we saw in the first Runnable.
+Also, let's verify if the child thread can get updated value inside the Object stored in ThreadLocal (because child thread doesn't do deep copy for `InheritableThreadLocal`):
 
-Then we change ThreadLocal value and submit second Runnable which has the same logic. This time no new Thread will be created and the Thread Pool will re-use existing Thread. If `InheritableThreadLocal` can refresh the value each time we would see updated value from the second Runnable. But test successed and it means that we still got original data we saw in the first Runnable.
-
-Also let's verify if child thread can get updated value inside the Object stored in ThreadLocal (because child thread doesn't do deep copy for InheritableThreadLocal):
-
-```java
+```java:InheritedThreadLocalTest.java
 @Test
 @DisplayName("Second runnable submitted to Thread Pool can see updates in the value itself")
 public void InheritableThreadLocalWithThreadPoolSecondRunnableSeeChangesInObject()
@@ -328,12 +326,12 @@ public void InheritableThreadLocalWithThreadPoolSecondRunnableSeeChangesInObject
 }
 ```
 
-We use [CountDownLatch](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CountDownLatch.html) to control data flow and wait until the thread actually starts.
-Then we modify data inside the `threadLocalData` and release second CountDownLatch which is used to suspend child Thread until we update the value.
+We use to control data flow and wait until the thread starts.
+Then we modify data inside the `threadLocalData` and release the second CountDownLatch which is used to suspend child Thread until we update the value.
 
-As expected child thread can see updated value.
+As expected child thread can see the updated value.
 
-How can we overcome the InheritableThreadLocal limitation? We can use library developed in the Alibaba.
+How can we overcome the InheritableThreadLocal limitation? We can use a library developed in Alibaba.
 
 ## Transmittable Thread Local
 
@@ -341,11 +339,11 @@ How can we overcome the InheritableThreadLocal limitation? We can use library de
 
 > TransmittableThreadLocal(TTL): The missing Java™ std lib(simple & 0-dependency) for framework/middleware, provide an enhanced InheritableThreadLocal that transmits values between threads even using thread pooling components.
 
-Library provides 3 ways to transmit value even using thread pool:
+Library provides three ways to transmit value, even using a thread pool:
 
-- _Decorate Runnable and Callable_. Decorate input `Runnable` and `Callable` by `TtlRunnable` and `TtlCallable`. Each time we create `Runnable` or `Callable` we have to decorate it. `TtlRunnable` wrapper captures values on it's creation and wraps the `run` method. First it updates Thread Local values with captured data, run original `Runnable` logic and finally restored original Thread Local values:
+- _Decorate Runnable and Callable_. Decorate input `Runnable` and `Callable` by `TtlRunnable` and `TtlCallable`. Each time we create `Runnable` or `Callable`, we need to decorate it. `TtlRunnable`wrapper captures values on its creation and wraps the`run`method. First, it updates Thread Local values with captured data, runs original`Runnable` logic, and finally restores original Thread Local values:
 
-```java
+```java:TtlRunnable.java
   private final AtomicReference<Object> capturedRef;
   private final Runnable runnable;
   private final boolean releaseTtlValueReferenceAfterRun;
@@ -372,21 +370,31 @@ Library provides 3 ways to transmit value even using thread pool:
   }
 ```
 
-- _Decorate thread pool_. Instead of decorating `Runnable` or `Callable` we can decorate Thread Pool itself only one time when we create it - wrapper will automatically create the `TtlRunnable`:
-  ```java
+Example of wrapping:
+
+```java
+Runnable ttlRunnable = TtlRunnable.get(runnable);
+```
+
+- _Decorate thread pool_. Instead of decorating `Runnable` or `Callable`, we can decorate the Thread Pool itself only one time when we create it - the wrapper will automatically instantiate the `TtlRunnable`.:
+  ```java:ExecutorTtlWrapper.java
   @Override
   public void execute(@NonNull Runnable command) {
     executor.execute(TtlRunnable.get(command, false, idempotent));
   }
   ```
-- _Use Java Agent to decorate thread pool implementation class_. In this approach no decoration needed and you have to only add `-javaagent:path/to/transmittable-thread-local-2.x.y.jar` to the Java command options.
+  Example of wrapping:
+  ```java
+  TtlExecutors.getTtlExecutorService(Executors.newFixedThreadPool(2));
+  ```
+- _Use Java Agent to decorate thread pool implementation class_. In this approach, no decoration needed,w and you have to only add `-javaagent:path/to/transmittable-thread-local-2.x.y.jar` to the Java command options.
 
 Let's do the same test as we did with `InheritableThreadLocal`:
 
-```java
+```java:TransmittableThreadLocalTest.java
 @Test
 @DisplayName("Second runnable submitted to Thread Pool gets updated value")
-public void InheritableThreadLocalWithThreadPoolSecondRunnable()
+public void transmittableThreadLocalWithThreadPoolSecondRunnable()
                 throws InterruptedException, ExecutionException {
   ThreadLocal<String> threadLocal = new TransmittableThreadLocal<>();
 
@@ -419,10 +427,95 @@ public void InheritableThreadLocalWithThreadPoolSecondRunnable()
 ```
 
 Now second `Runnable` sumbitted to the single-thread Thread Pool got updated Thread Local value.
-Everything works as expected. Full test code can be found on [GitHub](https://github.com/AnyRoad/sandbox/blob/main/inheritable-thread-local/src/test/java/dev/anyroad/threadlocal/TransmittableThreadLocalTest.java)
+Everything works as expected.
 
 ## Integratting Transmittable Thread Local to Spring
 
-Unfortunately `RequestContextHolder` has only static methods and used directly in the `FrameworkServlet` so it is not so easy to change `RequestContextHolder` logic to use `TransmittableThreadLocal`. Some methods of `FrameworkServlet` which uses `RequestContextHolder` are `protected final` (like `processRequest`) so we have to override higher level methods and in the end too many places will be touched.
+Unfortunately, `RequestContextHolder` has only static methods and is used directly in the `FrameworkServlet`, so it is not so easy to change `RequestContextHolder` logic to use `TransmittableThreadLocal`. Some methods of `FrameworkServlet` which uses `RequestContextHolder` are `protected final` (like `process request`), so we have to override higher-level methods and, in the end, will touch too many methods.
 
-Seems like only one effective way is to copy the whole `FrameworkServlet`, `RequestContextHolder` and `DispatcherServlet` source code and change the `NamedInheritableThreadLocal` to `TransmittableThreadLocal`.
+It might be more effective just to copy the whole `FrameworkServlet`, `RequestContextHolder` and `DispatcherServlet` source code and change the `NamedInheritableThreadLocal` to `TransmittableThreadLocal`.
+
+Let's run a similar test for the updated version for the `RequestContextHolder`:
+
+```java:TransmittableThreadLocalInheritTest.java
+@SpringBootTest(classes = {
+        TransmittableServletApp.class,
+        TransmittableDispatcherServlet.class,
+        TransmittableDispatcherServletAutoConfiguration.class
+}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestPropertySource(properties = "threadContextInheritable=true")
+class TransmittableThreadLocalInheritTest extends BaseMvcTest {
+
+  @Test
+  public void shouldInheritRequestContestInChildThread() {
+    for (int i = 1; i <= 10; ++i) {
+      ControllerResult response = callApi("/one-level-child-thread");
+      assertEquals(i, response.getChildThreadValue());
+      assertEquals(i, response.getParentThreadValue());
+      assertTrue(response.isChildThreadHasSameRequestAttributes());
+      assertTrue(response.isSuccess());
+    }
+  }
+}
+```
+
+Now all ten requests got updated value in the RequestAttributes.
+
+Now let's verify if logic works fine with [Spring Async MVC](https://spring.io/blog/2012/05/07/spring-mvc-3-2-preview-introducing-servlet-3-async-support). It is enabled by default in the recent Spring version. The controller and test code are below:
+
+```java:Controller.java
+@GetMapping("/async/one-level-child-thread")
+public Callable<ControllerResult> oneLevelAsync() {
+  RequestAttributes originalRequestAttributes = getRequestAttributes();
+  int counterValue = counter.incrementAndGet();
+
+  originalRequestAttributes.setAttribute(ATTRIBUTE_NAME, counterValue, SCOPE);
+  int counterValueFromAttributes = (int) originalRequestAttributes.getAttribute(ATTRIBUTE_NAME, SCOPE);
+
+  return () -> {
+    CompletableFuture<RequestAttributes> requestFuture =
+        CompletableFuture.supplyAsync(this::getRequestAttributes, threadPool);
+
+    return buildResponse(requestFuture, counterValueFromAttributes, originalRequestAttributes);
+  };
+}
+```
+
+```java:TransmittableThreadLocalInheritTest.java
+ @Test
+public void shouldInheritRequestContestInChildThreadAsyncResponse() {
+  for (int i = 1; i <= 10; ++i) {
+    ControllerResult response = callApi("/async/one-level-child-thread");
+    assertEquals(i, response.getChildThreadValue());
+    assertEquals(i, response.getParentThreadValue());
+    assertFalse(response.isChildThreadHasSameRequestAttributes());
+    assertTrue(response.isSuccess());
+  }
+}
+```
+
+Everything works fine as well, but there is some difference - `RequestAttributes` Object is not the same even it has the same data (`isChildThreadHasSameRequestAttributes` is `false`).
+
+Let's look at the official Spring documentation:
+
+> Servlet 3 web application can call request.startAsync() and use the returned AsyncContext to continue to write to the response from some other separate thread. At the same time from a client's perspective the request still looks like any other HTTP request-response interaction. It just takes longer to complete. The following is the sequence of events:
+>
+> 1. Client sends a request
+> 2. Servlet container allocates a thread and invokes a servlet in it
+> 3. The servlet calls request.startAsync(), saves the AsyncContext, and returns
+> 4. The container thread is exited all the way but the response remains open
+> 5. Some other thread uses the saved AsyncContext to complete the response
+> 6. Client receives the response
+
+In the middle of the data flow, Spring creates `ServletRequestAttributes` again based on the `HttpServletRequest` and `HttpServletResponse` so we don't need to wrap the `AsyncTaskExecutor`, which is used for the async processing.
+
+GitHub code also contains similar tests for request handler, which uses two Threads, so it needs to pass RequestAttribures to the grand-child Thread.
+
+## Conclusion
+
+We can use the `TransmittableThreadLocal` to fix default `InheritableThreadLocal` Java implementation.
+
+But for the Spring `RequestContextHolder`, we have to modify too much source code, which can be troublesome for a production project, and you have to do it each time you upgrade the Spring version to avoid any side effects.
+It feels more reasonable to pass Request related information implicitly as method parameters if you need to use it in logic executed inside Thread Pool. When we have to use a 3rd party library in the existing application, we might consider cloning `FrameworkServlet` to avoid many changes in the code. Even in this case, we manually set RequestAttributes to the RequestContextHolder just before calling the library function.
+
+Outside of Spring's internal usage, it works fine, and for the `Decorate thread pool` option, we don't need to do many changes, only add `TtlExecutors.getTtlExecutorService` to Thread Pool creation code.

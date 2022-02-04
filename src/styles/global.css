@@ -324,3 +324,7 @@ h3 {
     display: none;
   }
 }
+
+.content p {
+  text-align: justify;
+}
