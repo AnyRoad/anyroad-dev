@@ -314,6 +314,12 @@ ol {
   transition: top 0.5s ease-in-out;
 }
 
+.topnav-header a:active,
+.topnav-header a:hover {
+  outline: none;
+  text-decoration: none;
+}
+
 h2,
 h3 {
   scroll-margin-top: var(--header-header);
