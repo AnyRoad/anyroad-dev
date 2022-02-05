@@ -3,7 +3,28 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Pomodoro from './pomodoro-timer.tsx';
 ---
 
-<BaseLayout seo={{ title: 'Simple Pomodoro technique implementation' }}>
+<BaseLayout seo={{
+    title: 'Simple Pomodoro technique implementation',
+    description: 'This page allows you to set Pomodoro timer and choose time for pomodoro, short and long breaks.',
+    openGraph: {
+      basic: {
+        title: "Set Pomodoro timer in your browser",
+        type: 'website',
+        image: '',
+        url: Astro.request.canonicalURL.href
+      }
+    },
+    optional: {
+      description: 'Set Pomodoro timer in your browser',
+      locale: 'en_US',
+      localeAlternate: ['en_GB']
+    },
+    twitter: {
+      card: 'summary',
+      site: '@anyroaddev',
+      creator: '@anyroaddev'
+    }
+  }}
   <h2>Set Pomodoro Timer</h2>
   <Pomodoro client:load />
 </BaseLayout>

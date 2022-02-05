@@ -7,7 +7,7 @@ description: About AnyRoad. My name is Andy.
 permalink: https://anyroad.dev/
 ---
 
-Hi! My name is Andy, and this is my personal website.
+Hi! My name is Andy, and this is my website.
 <br/>
 <br/>
 I have been developing software for more than 17 years. I started with Desktop apps made with Visual Basic, C++, Qt, and C#. But for the last ten years, I have been developing web applications with Java and JavaScript/TypeScript.

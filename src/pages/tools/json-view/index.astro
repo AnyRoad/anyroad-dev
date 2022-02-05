@@ -3,7 +3,30 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import JsonFormatter from './json-view.tsx';
 ---
 
-<BaseLayout seo={{ title: 'View Json Data' }}>
-  <h2>View Json Data</h2>
+<BaseLayout
+  seo={{
+    title: 'View formatted JSON data',
+    description: 'This page allows you to view formatted JSON data as a tree with color highlighting',
+    openGraph: {
+      basic: {
+        title: 'View formatted JSON data as a tree with color highlighting',
+        type: 'website',
+        image: '',
+        url: Astro.request.canonicalURL.href
+      }
+    },
+    optional: {
+      description: 'View formatted JSON data as a tree with color highlighting',
+      locale: 'en_US',
+      localeAlternate: ['en_GB']
+    },
+    twitter: {
+      card: 'summary',
+      site: '@anyroaddev',
+      creator: '@anyroaddev'
+    }
+  }}
+>
+  <h2>Format JSON data</h2>
   <JsonFormatter client:load />
 </BaseLayout>

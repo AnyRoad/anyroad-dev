@@ -3,7 +3,30 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import GitHubForks from './github-forks.tsx';
 ---
 
-<BaseLayout seo={{ title: 'Browse GitHub Forks' }}>
+<BaseLayout
+  seo={{
+    title: 'View who forked the GitHub repository',
+    description: 'This page allows you to view forks for the GitHub repository sorted in the selected way.',
+    openGraph: {
+      basic: {
+        title: 'View forks for the GitHub repository',
+        type: 'website',
+        image: '',
+        url: Astro.request.canonicalURL.href
+      }
+    },
+    optional: {
+      description: 'View forks for the GitHub repository',
+      locale: 'en_US',
+      localeAlternate: ['en_GB']
+    },
+    twitter: {
+      card: 'summary',
+      site: '@anyroaddev',
+      creator: '@anyroaddev'
+    }
+  }}
+>
   <h2>Browse GitHub Forks</h2>
   <GitHubForks client:load />
 </BaseLayout>

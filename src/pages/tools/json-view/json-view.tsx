@@ -1,13 +1,10 @@
 import * as React from 'react';
-import { JsonView, defaultStyles } from 'react-json-view-lite';
+import { JsonView, defaultStyles, collapseAllNested, allExpanded } from 'react-json-view-lite';
 import 'react-json-view-lite/dist/index.css';
 import classNames from 'classnames/bind';
 import styles from './json-view.css';
 
 const cx = classNames.bind(styles);
-
-const fullyExpanded = () => true;
-const firstLevelCollapsed = (level: number) => level < 1;
 
 const JsonFormatter = (): JSX.Element => {
   const [json, setJson] = React.useState('');
@@ -19,7 +16,7 @@ const JsonFormatter = (): JSX.Element => {
     try {
       json && setJsonData(JSON.parse(json));
       setErrorText('');
-    } catch (error) {
+    } catch (error: any) {
       setErrorText(error.toString());
     }
   }, [json]);
@@ -33,8 +30,8 @@ const JsonFormatter = (): JSX.Element => {
           </label>
           <textarea
             id='json'
-            rows={10}
-            cols={100}
+            rows={15}
+            cols={150}
             className={cx('json-input')}
             value={json}
             onChange={(e) => setJson(e.target.value)}
@@ -51,7 +48,7 @@ const JsonFormatter = (): JSX.Element => {
         {!errorText && (
           <JsonView
             data={jsonData}
-            shouldInitiallyExpand={expanded ? fullyExpanded : firstLevelCollapsed}
+            shouldInitiallyExpand={expanded ? allExpanded : collapseAllNested}
             style={defaultStyles}
           />
         )}
