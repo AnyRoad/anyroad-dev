@@ -364,3 +364,7 @@ h3:hover a:active {
   line-height: inherit;
   text-decoration: none;
 }
+
+.footer-icon {
+  @apply mr-2 inline;
+}
