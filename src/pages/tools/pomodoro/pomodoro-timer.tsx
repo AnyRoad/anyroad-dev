@@ -122,10 +122,7 @@ function reducer(state: State, action: Action): State {
         if (lastPomodoro.remainingTime === 0) {
           lastPomodoro.completed = true;
           lastPomodoro.completeTime = new Date();
-          showNotification(
-            'Completed!',
-            `'${titleByPomodoroType.get(lastPomodoro.type)}' completed.`
-          );
+          showNotification('Completed!', `'${titleByPomodoroType.get(lastPomodoro.type)}' completed.`);
         }
       });
     case ActionType.SetTimeForPomodoroType: {
@@ -181,8 +178,7 @@ const PomodoroList = (): JSX.Element => {
   };
 
   const { pomodoros } = state;
-  const pomodoroStarted =
-    pomodoros.length > 0 && !pomodoros[pomodoros.length - 1].completed;
+  const pomodoroStarted = pomodoros.length > 0 && !pomodoros[pomodoros.length - 1].completed;
 
   const renderMinutesInput = (pomodoroType: PomodoroType) => {
     const timeInSeconds = state.pomodoroTimes.get(pomodoroType);
@@ -192,7 +188,7 @@ const PomodoroList = (): JSX.Element => {
         <input
           id='pomodoro'
           className={cx('minutes-input')}
-          inputmode='numeric'
+          inputMode='numeric'
           pattern='[0-9]*'
           type='text'
           value={time}
