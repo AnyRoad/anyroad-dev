@@ -1,4 +1,4 @@
-import * as GitHubTypes from './types';
+import type * as GitHubTypes from './types';
 
 export enum ApiCallResult {
   Success = 1,
@@ -11,11 +11,7 @@ const buildFailedResponse = async <DataType>(
   defaultResult: DataType
 ): Promise<[ApiCallResult, string, DataType]> => {
   if (response.status === 404) {
-    return [
-      ApiCallResult.NotFound,
-      'Target not found in GitHub, please check you input.',
-      defaultResult
-    ];
+    return [ApiCallResult.NotFound, 'Target not found in GitHub, please check you input.', defaultResult];
   }
   if (response.json) {
     const json = await response.json();
