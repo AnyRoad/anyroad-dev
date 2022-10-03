@@ -1,6 +1,5 @@
 ---
-setup: |
-  import Layout from '../layouts/Markdown.astro'
+layout: ../layouts/Markdown.astro
 title: About me
 header: 🤝 About me
 description: About AnyRoad. My name is Andy.
@@ -8,18 +7,19 @@ permalink: https://anyroad.dev/
 ---
 
 Hi! My name is Andy, and this is my website.
-<br/>
-<br/>
-I have been developing software for more than 17 years. I started with Desktop apps made with Visual Basic, C++, Qt, and C#. But for the last ten years, I have been developing web applications with Java and JavaScript/TypeScript.
-<br/>
-<br/>
 
+<br />
+I have been developing software for more than 17 years. I started with Desktop apps made with Visual Basic, C++,
+Qt, and C#. But for the last ten years, I have been developing web applications with Java and JavaScript/TypeScript.
+<br />
+<br />
 🇰🇷 Live in South Korea
-<br/>
-<br/>
+<br />
+<br />
 👨‍💻 In the office:
 
-- 🚀 Work in [Coupang](https://www.coupang.jobs/en/why-coupang/) - the world's fastest-growing e-commerce company
+- 🏡 Work in [O!House](https://www.bucketplace.com/en) - No.1 Lifestyle Tech Company
+- 🚀 Worked in [Coupang](https://www.coupang.jobs/en/why-coupang/) - the world's fastest-growing e-commerce company
 - 💻 Relish building software that helps people
 - ⏳ Know when to work fast to get a project completed until the deadline
 - 💪 Know when to work slow to get things done in the best way
@@ -27,7 +27,7 @@ I have been developing software for more than 17 years. I started with Desktop a
 - 👀 Look at cutting-edge technology but understand that we cannot apply it all in production
 - 💭 Like working in a team to support each other to get the best result
 
-<br/>
+<br />
 
 🎉 Outside of work:
 

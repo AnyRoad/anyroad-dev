@@ -6,15 +6,15 @@ export interface Props {
 
 const { post } = Astro.props;
 
-const publishDateLongFormat = dayjs(post.publishDate, 'YYYY-MM-DD').format('DD MMM YYYY');
+const publishDateLongFormat = dayjs(post.frontmatter.pubDate, 'YYYY-MM-DD').format('DD MMM YYYY');
 ---
 
-<article class="post-preview">
+<article class='post-preview'>
   <header>
-    <p class="publish-date">{publishDateLongFormat}</p>
-    <a href={post.url}><h1 class="title">{post.title}</h1></a>
+    <p class='publish-date'>{publishDateLongFormat}</p>
+    <a href={post.url}><h1 class='title'>{post.frontmatter.title}</h1></a>
   </header>
-  <p>{post.description}</p>
+  <p>{post.frontmatter.description}</p>
   <a href={post.url}>Read more</a>
 </article>
 

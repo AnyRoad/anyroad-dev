@@ -1,7 +1,5 @@
 ---
-setup: |
-  import Layout from '../layouts/Markdown.astro'
-  import { JsonView } from 'react-json-view-lite';
+layout: ../layouts/Markdown.astro
 title: AnyRoad's projects
 header: 👨‍💻 AnyRoad's projects
 description: List of my projects
@@ -19,7 +17,7 @@ This implementation aims to render high volume input data but still have few use
 
 Example can be found [here](/tools/json-view).
 
-<img style="margin: 15px" width=600px src="/jsonview.png" alt="json view component example" />
+<img style='margin: 15px' width='600px' src='/jsonview.png' alt='json view component example' />
 
 ## JCommune
 
@@ -28,5 +26,5 @@ Example can be found [here](/tools/json-view).
 A forum engine written in Java. Its architecture supports plugins and therefore is extensible.
 Forum supports few different post types: ordinary posts, polls, question and answer style (stackoverflow-like) and code review request.
 
-<img style="margin: 15px" src="/jcommune/main.png" alt="jcommune main" />
-<img style="margin: 15px" src="/jcommune/post.png" alt="jcommune post" />
+<img style='margin: 15px' src='/jcommune/main.png' alt='jcommune main' />
+<img style='margin: 15px' src='/jcommune/post.png' alt='jcommune post' />

@@ -1,8 +1,7 @@
 ---
-setup: |
-  import Layout from '../../../layouts/BlogPost.astro'
+layout: ../../../layouts/BlogPost.astro
 title: Spring RequestContextHolder and Thread Local Inheritance
-publishDate: '2022-02-03'
+pubDate: '2022-02-03'
 description: Spring allows exposing HTTP request-related data outside of the Controller class with the help of a thread-bound RequestAttributes object. But real-world applications do not process the request with a single thread. Can we use RequestAttributes with code that is running inside the thread pool?
 tags:
   [

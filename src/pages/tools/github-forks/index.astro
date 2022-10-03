@@ -12,7 +12,7 @@ import GitHubForks from './github-forks.tsx';
         title: 'View forks for the GitHub repository',
         type: 'website',
         image: '',
-        url: Astro.request.canonicalURL.href
+        url: new URL(Astro.url.pathname, Astro.site).href
       }
     },
     optional: {

@@ -15,9 +15,9 @@ import 'prismjs/components/prism-bash';
 import '../styles/prism.css';
 
 const { content } = Astro.props;
-const { title, seo, publishDate, heroImage, alt, permalink, description, tags, ogTitle } = content;
+const { title, seo, pubDate, heroImage, alt, permalink, description, tags, ogTitle } = content;
 
-const publishDateLongFormat = dayjs(publishDate, 'YYYY-MM-DD').format('DD MMM YYYY');
+const publishDateLongFormat = dayjs(pubDate, 'YYYY-MM-DD').format('DD MMM YYYY');
 ---
 
 <BaseLayout
@@ -33,7 +33,7 @@ const publishDateLongFormat = dayjs(publishDate, 'YYYY-MM-DD').format('DD MMM YY
         url: permalink
       },
       article: {
-        publishedTime: publishDate,
+        publishedTime: pubDate,
         author: 'anyroad.dev',
         section: 'programming',
         tags: tags
@@ -51,8 +51,8 @@ const publishDateLongFormat = dayjs(publishDate, 'YYYY-MM-DD').format('DD MMM YY
     }
   }}
 >
-  <div class="wrapper">
-    <BlogPost {title} {heroImage} publishDate={publishDateLongFormat} {alt}>
+  <div class='wrapper'>
+    <BlogPost {title} {heroImage} pubDate={publishDateLongFormat} {alt}>
       <slot />
     </BlogPost>
   </div>

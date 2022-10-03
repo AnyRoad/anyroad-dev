@@ -11,7 +11,7 @@ import Pomodoro from './pomodoro-timer.tsx';
         title: "Set Pomodoro timer in your browser",
         type: 'website',
         image: '',
-        url: Astro.request.canonicalURL.href
+        url: new URL(Astro.url.pathname, Astro.site).href
       }
     },
     optional: {

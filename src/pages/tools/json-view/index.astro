@@ -12,7 +12,7 @@ import JsonFormatter from './json-view.tsx';
         title: 'View formatted JSON data as a tree with color highlighting',
         type: 'website',
         image: '',
-        url: Astro.request.canonicalURL.href
+        url: new URL(Astro.url.pathname, Astro.site).href
       }
     },
     optional: {

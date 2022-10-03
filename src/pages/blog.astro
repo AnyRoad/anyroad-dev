@@ -4,15 +4,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import BlogPostPreview from '../components/BlogPostPreview.astro';
 
 interface MarkdownFrontmatter {
-  publishDate: number;
+  pubDate: number;
 }
 
 let title = "Any Road's blog";
 let description = 'Random thoughts of full-stack developer.';
 
 // Data Fetching: List all Markdown posts in the repo.
-let allPosts = await Astro.fetchContent('./posts/2022/*.md');
-allPosts = allPosts.sort((a, b) => new Date(b.publishDate).valueOf() - new Date(a.publishDate).valueOf());
+let allPosts = await Astro.glob('./posts/2022/*.md');
+allPosts = allPosts.sort((a, b) => new Date(b.pubDate).valueOf() - new Date(a.pubDate).valueOf());
 ---
 
 <BaseLayout
@@ -24,15 +24,15 @@ allPosts = allPosts.sort((a, b) => new Date(b.publishDate).valueOf() - new Date(
         title: title,
         type: 'website',
         image: '',
-        url: Astro.request.canonicalURL.href
+        url: new URL(Astro.url.pathname, Astro.site).href
       }
     }
   }}
 >
-  <section class="intro">
-    <h1 class="latest">📝 {title}</h1>
+  <section class='intro'>
+    <h1 class='latest'>📝 {title}</h1>
   </section>
-  <section aria-label="Blog post list">
+  <section aria-label='Blog post list'>
     {allPosts.map((p) => <BlogPostPreview post={p} />)}
   </section>
 </BaseLayout>
