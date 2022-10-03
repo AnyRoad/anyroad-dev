@@ -42,7 +42,9 @@ export default defineConfig({
               return 'vendor';
             }
 
-            return 'common';
+            if (id.includes('tools')) {
+              return 'tools';
+            }
           }
         }
       }
