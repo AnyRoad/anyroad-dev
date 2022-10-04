@@ -32,22 +32,5 @@ export default defineConfig({
       ],
       [addClasses, { 'h1,h2,h3': 'title' }]
     ]
-  },
-  vite: {
-    build: {
-      rollupOptions: {
-        output: {
-          manualChunks(id) {
-            if (id.includes('node_modules')) {
-              return 'vendor';
-            }
-
-            if (id.includes('tools')) {
-              return 'tools';
-            }
-          }
-        }
-      }
-    }
   }
 });

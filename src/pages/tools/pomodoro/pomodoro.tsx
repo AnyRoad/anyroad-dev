@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classNames from 'classnames/bind';
-import styles from './pomodoro-timer.css';
+import styles from './pomodoro-timer.module.css';
 
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';

@@ -2,9 +2,9 @@ import * as React from 'react';
 import { JsonView, defaultStyles, collapseAllNested, allExpanded } from 'react-json-view-lite';
 import 'react-json-view-lite/dist/index.css';
 import classNames from 'classnames/bind';
-import styles from './json-view.css';
+import jsonViewStyles from './json-view.module.css';
 
-const cx = classNames.bind(styles);
+const cx = classNames.bind(jsonViewStyles);
 
 const JsonFormatter = (): JSX.Element => {
   const [json, setJson] = React.useState('');

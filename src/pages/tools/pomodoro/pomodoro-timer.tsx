@@ -1,7 +1,7 @@
 import * as React from 'react';
 import produce, { enableMapSet } from 'immer';
 import classNames from 'classnames/bind';
-import styles from './pomodoro-timer.css';
+import styles from './pomodoro-timer.module.css';
 import Pomodoro, { PomodoroInfo, PomodoroType, titleByPomodoroType } from './pomodoro';
 
 import dayjs from 'dayjs';

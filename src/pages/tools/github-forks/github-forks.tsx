@@ -2,9 +2,9 @@ import * as React from 'react';
 import dayjs from 'dayjs';
 import * as GitHubApis from '../../../api/github';
 import classNames from 'classnames/bind';
-import styles from './github-forks.css';
+import githubForkStyles from './github-forks.module.css';
 
-const cx = classNames.bind(styles);
+const cx = classNames.bind(githubForkStyles);
 
 import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);
