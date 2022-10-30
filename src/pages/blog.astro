@@ -4,15 +4,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import BlogPostPreview from '../components/BlogPostPreview.astro';
 
 interface MarkdownFrontmatter {
-  pubDate: number;
+  pubDate: string;
 }
 
 let title = "Any Road's blog";
 let description = 'Random thoughts of full-stack developer.';
 
 // Data Fetching: List all Markdown posts in the repo.
-let allPosts = await Astro.glob('./posts/2022/*.md');
-allPosts = allPosts.sort((a, b) => new Date(b.pubDate).valueOf() - new Date(a.pubDate).valueOf());
+let allPosts = await Astro.glob<MarkdownFrontmatter>('./posts/2022/*.md');
+allPosts = allPosts.sort((a, b) => Date.parse(b.frontmatter.pubDate) - Date.parse(a.frontmatter.pubDate));
 ---
 
 <BaseLayout
