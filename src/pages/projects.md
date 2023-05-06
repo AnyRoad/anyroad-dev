@@ -15,7 +15,7 @@ This implementation aims to render high volume input data but still have few use
 
 Example can be found [here](/tools/json-view).
 
-<img style='margin: 15px' width='600px' src='/jsonview.png' alt='json view component example' />
+<img style='margin: 15px' src='/jsonview.png' alt='json view component example' />
 
 ## JCommune
 
