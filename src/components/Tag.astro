@@ -1,4 +1,5 @@
 ---
+import { slugifyStr } from "@utils/slugify";
 export interface Props {
   name: string;
   size?: "sm" | "lg";
@@ -13,7 +14,7 @@ const { name, size = "sm" } = Astro.props;
   }`}
 >
   <a
-    href={`/tags/${name.toLowerCase()}`}
+    href={`/tags/${slugifyStr(name.toLowerCase())}`}
     class={`${size === "sm" ? "text-sm" : "text-lg"} pr-2 group`}
   >
     <svg

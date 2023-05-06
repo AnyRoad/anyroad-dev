@@ -1,9 +1,9 @@
 export const SITE_TITLE = `Andy's personal website.`;
 export const SITE_DESCRIPTION = 'Welcome to my website!';
 
-import type { SocialObjects } from './types';
+import type { Site, SocialObjects } from './types';
 
-export const SITE = {
+export const SITE: Site = {
   website: 'https://anyroad.dev/',
   author: 'AnyRoad',
   desc: 'Random notes about software development',

@@ -11,7 +11,7 @@ tags:
   - plugin
   - shadow
   - jar
-  - packages-relocation
+  - packages relocation
 ogImage: ''
 featured: false
 draft: false

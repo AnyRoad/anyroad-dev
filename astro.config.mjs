@@ -42,5 +42,10 @@ export default defineConfig({
       [addClasses, { 'h1,h2,h3': 'title' }]
     ],
     extendDefaultPlugins: true
-  }
+  },
+  vite: {
+    optimizeDeps: {
+      exclude: ["@resvg/resvg-js"],
+    },
+  },
 });

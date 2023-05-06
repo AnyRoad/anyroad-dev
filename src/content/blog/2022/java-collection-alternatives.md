@@ -6,8 +6,8 @@ description: Let's look at the example of the Shadow Gradle plugin settings for 
 tags:
   - java
   - collections
-  - primitive-types
-  - eclipse-collections
+  - primitive types
+  - eclipse collections
 ogImage: ''
 featured: false
 draft: true
