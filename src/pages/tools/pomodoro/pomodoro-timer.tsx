@@ -6,7 +6,6 @@ import Pomodoro, { PomodoroInfo, PomodoroType, titleByPomodoroType } from './pom
 
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import { is } from 'immer/dist/internal';
 dayjs.extend(duration);
 
 enableMapSet();
@@ -203,7 +202,7 @@ const PomodoroList = (): JSX.Element => {
 
   return (
     <>
-      <div className='grid gap-4 md:grid-cols-2 grid-cols-1'>
+      <div className='md:grid-cols-2 grid grid-cols-1 gap-4'>
         <div>
           <div>
             <button

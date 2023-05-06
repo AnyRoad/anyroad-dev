@@ -31,10 +31,6 @@
   text-align: right;
 }
 
-.forks-table tr:nth-child(even) {
-  background-color: #ebf7e7;
-}
-
 .avatar-image {
   height: 24px;
   margin-right: 5px;

@@ -1,9 +1,7 @@
 ---
-layout: ../layouts/Markdown.astro
-title: AnyRoad's projects
-header: 👨‍💻 AnyRoad's projects
-description: List of my projects
-permalink: https://anyroad.dev/projects
+layout: ../layouts/MarkdownLayout.astro
+title: 👨‍💻 AnyRoad's projects
+activeNav: projects
 ---
 
 ## React Json Viewer component

@@ -1,47 +1,23 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from '../layouts/Base.astro';
 ---
 
-<BaseLayout
-  seo={{
-    title: "AnyRoad's Development Tools",
-    description: 'Useful tools for Developers by AnyRoad',
-    openGraph: {
-      basic: {
-        title: "AnyRoad's Development Tools",
-        type: 'website',
-        image: '',
-        url: new URL(Astro.url.pathname, Astro.site).href
-      }
-    },
-    optional: {
-      description: 'Useful tools for Developers by AnyRoad',
-      locale: 'en_US',
-      localeAlternate: ['en_GB']
-    },
-    twitter: {
-      card: 'summary',
-      site: '@anyroaddev',
-      creator: '@anyroaddev'
-    }
-  }}
->
-  <h2>🛠 Developer Tools</h2>
-  <p class="mb-5">
+<BaseLayout title='🛠 Developer Tools' activeNav='tools'>
+  <p class='mb-5'>
     These are small dev tools I've created cause I found them practical in my daily work. They all work only
     on the client-side and do not send any requests to any server except the APIs needed for the logic itself.
     If you found any issue, please report it
-    <a href="http://github.com/AnyRoad/anyroad-dev/issues">here</a>.
+    <a href='http://github.com/AnyRoad/anyroad-dev/issues'>here</a>.
   </p>
   <ul>
     <li>
-      <a href="/tools/github-forks">GitHub Forks</a> - view who forked the GitHub repository.
+      <a href='/tools/github-forks'>GitHub Forks</a> - view who forked the GitHub repository.
     </li>
     <li>
-      <a href="/tools/json-view">Json View</a> - view formatted JSON data as a tree with color highlighting.
+      <a href='/tools/json-view'>Json View</a> - view formatted JSON data as a tree with color highlighting.
     </li>
     <li>
-      <a href="/tools/pomodoro">Pomodoro Timer</a> - simple Pomodoro technique implementation.
+      <a href='/tools/pomodoro'>Pomodoro Timer</a> - simple Pomodoro technique implementation.
     </li>
   </ul>
 </BaseLayout>
