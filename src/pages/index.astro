@@ -62,7 +62,11 @@ const socialCount = SOCIALS.filter((social) => social.active).length;
           <h2>Featured Posts:</h2>
           <ul>
             {featuredPosts.map(({ data }) => (
-              <Card href={`/posts/${new Date(data.pubDatetime).getFullYear()}/${slugify(data)}`} frontmatter={data} secHeading={false} />
+              <Card
+                href={`/posts/${new Date(data.pubDatetime).getFullYear()}/${slugify(data)}`}
+                frontmatter={data}
+                secHeading={false}
+              />
             ))}
           </ul>
         </section>
@@ -77,7 +81,13 @@ const socialCount = SOCIALS.filter((social) => social.active).length;
       {
         sortedPosts.map(
           ({ data }, index) =>
-            index < 4 && <Card href={`/posts/${new Date(data.pubDatetime).getFullYear()}/${slugify(data)}`} frontmatter={data} secHeading={false} />
+            index < 4 && (
+              <Card
+                href={`/posts/${new Date(data.pubDatetime).getFullYear()}/${slugify(data)}`}
+                frontmatter={data}
+                secHeading={false}
+              />
+            )
         )
       }
     </ul>

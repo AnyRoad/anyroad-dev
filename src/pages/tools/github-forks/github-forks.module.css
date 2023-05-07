@@ -63,12 +63,12 @@
   border: none;
   color: #ffffff;
   padding: 12px 26px;
-  @apply rounded m-1;
+  @apply m-1 rounded;
 }
 
 .label {
   color: #164a41;
-  @apply font-bold antialiased text-lg;
+  @apply text-lg font-bold antialiased;
 }
 
 .error-label {

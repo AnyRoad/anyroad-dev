@@ -3,9 +3,9 @@ import mdx from '@astrojs/mdx';
 import tailwind from '@astrojs/tailwind';
 import react from '@astrojs/react';
 import remarkToc from 'remark-toc';
-import remarkCollapse from "remark-collapse";
+import remarkCollapse from 'remark-collapse';
 import sitemap from '@astrojs/sitemap';
-import { SITE } from "./src/config";
+import { SITE } from './src/config';
 
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
@@ -29,7 +29,7 @@ export default defineConfig({
     react(),
     astroCodeSnippets(),
     mdx(),
-    sitemap(),
+    sitemap()
   ],
   markdown: {
     remarkPlugins: [
@@ -37,9 +37,9 @@ export default defineConfig({
       [
         remarkCollapse,
         {
-          test: "Table of contents",
-        },
-      ],
+          test: 'Table of contents'
+        }
+      ]
     ],
     shikiConfig: {
       theme: 'css-variables',
@@ -54,7 +54,7 @@ export default defineConfig({
   },
   vite: {
     optimizeDeps: {
-      exclude: ["@resvg/resvg-js"],
-    },
-  },
+      exclude: ['@resvg/resvg-js']
+    }
+  }
 });

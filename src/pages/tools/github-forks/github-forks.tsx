@@ -81,7 +81,7 @@ const Forks = (): JSX.Element => {
 
   return (
     <>
-      <div className='grid gap-4 md:grid-cols-2 grid-cols-1'>
+      <div className='md:grid-cols-2 grid grid-cols-1 gap-4'>
         <div>
           <label htmlFor='repository' className={cx('label')}>
             Repository
