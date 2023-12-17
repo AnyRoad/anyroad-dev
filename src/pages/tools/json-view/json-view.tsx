@@ -48,7 +48,7 @@ const JsonFormatter = (): JSX.Element => {
         {!errorText && (
           <JsonView
             data={jsonData}
-            shouldInitiallyExpand={expanded ? allExpanded : collapseAllNested}
+            shouldExpandNode={expanded ? allExpanded : collapseAllNested}
             style={defaultStyles}
           />
         )}

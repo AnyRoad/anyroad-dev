@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import tailwind from '@astrojs/tailwind';
 import react from '@astrojs/react';
+import astroExpressiveCode from 'astro-expressive-code'
 import remarkToc from 'remark-toc';
 import remarkCollapse from 'remark-collapse';
 import sitemap from '@astrojs/sitemap';
@@ -11,23 +12,21 @@ import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import addClasses from './add-classes.mjs';
 
-import AutoImport from 'astro-auto-import';
-import { astroCodeSnippets, codeSnippetAutoImport } from './integrations/astro-code-snippets';
+const astroExpressiveCodeOptions = {
+  themeCssSelector: (theme) => `[code-theme='${theme.name}']`,
+  themes: ['vitesse-light', 'dracula-soft'],
+  useThemedSelectionColors: false
+}
 
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
   integrations: [
-    AutoImport({
-      imports: [codeSnippetAutoImport]
-    }),
     tailwind({
-      config: {
-        applyBaseStyles: false
-      }
+      applyBaseStyles: false,
     }),
     react(),
-    astroCodeSnippets(),
+    astroExpressiveCode(astroExpressiveCodeOptions),
     mdx(),
     sitemap()
   ],
@@ -56,5 +55,6 @@ export default defineConfig({
     optimizeDeps: {
       exclude: ['@resvg/resvg-js']
     }
-  }
+  },
+  scopedStyleStrategy: 'where',
 });

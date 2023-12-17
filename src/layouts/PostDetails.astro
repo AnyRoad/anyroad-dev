@@ -35,9 +35,22 @@ const ogUrl = new URL(ogImage ? ogImage : `${title}.png`, Astro.url.origin).href
       <Content />
     </article>
 
-    <ul class='tags-container font-mono'>
+    <ul class='my-8 font-mono'>
       {tags.map((tag) => <Tag name={tag} />)}
     </ul>
+    <div class="flex justify-end">
+      <button
+        id="back-to-top"
+        class="focus-outline whitespace-nowrap hover:opacity-75"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="rotate-90">
+          <path
+            d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
+          ></path>
+        </svg>
+        <span>Back to Top</span>
+      </button>
+    </div>
   </main>
   <Footer />
 </Layout>
@@ -49,7 +62,12 @@ const ogUrl = new URL(ogImage ? ogImage : `${title}.png`, Astro.url.origin).href
   .post-title {
     @apply text-2xl font-semibold text-skin-accent;
   }
-  .tags-container {
-    @apply my-8;
-  }
 </style>
+<script is:inline>
+  /* When the user clicks on the "Back to Top" button,
+   * scroll to the top of the document */
+  document.querySelector("#back-to-top")?.addEventListener("click", () => {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+  });
+</script>

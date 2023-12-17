@@ -22,7 +22,7 @@ function capitalizeBreadCrumb(breadcrumb: string): string {
   <ul>
     <li>
       <a href='/'>Home</a>
-      <span aria-hidden='true'>&#62;</span>
+      <span aria-hidden='true'>&nbsp;&gt;&nbsp;</span>
     </li>
     {
       breadcrumbList.map((breadcrumb, index) =>
@@ -39,7 +39,7 @@ function capitalizeBreadCrumb(breadcrumb: string): string {
         ) : (
           <li>
             <a href={`/${breadcrumb}`}>{breadcrumb}</a>
-            <span aria-hidden='true'>&#62;</span>
+            <span aria-hidden='true'>&nbsp;&gt;&nbsp;</span>
           </li>
         )
       )

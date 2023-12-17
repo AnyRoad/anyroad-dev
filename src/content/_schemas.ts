@@ -13,5 +13,3 @@ export const blogSchema = z
     description: z.string()
   })
   .strict();
-
-export type BlogFrontmatter = z.infer<typeof blogSchema>;
