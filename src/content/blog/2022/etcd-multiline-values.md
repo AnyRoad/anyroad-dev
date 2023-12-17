@@ -10,7 +10,6 @@ tags:
   - put
   - value
   - multiline
-ogImage: ''
 featured: false
 draft: false
 ---

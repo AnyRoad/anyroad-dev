@@ -8,7 +8,6 @@ export const SITE: Site = {
   author: 'AnyRoad',
   desc: 'Random notes about software development',
   title: 'AnyRoad',
-  ogImage: '',
   lightAndDarkMode: true,
   postPerPage: 10
 };

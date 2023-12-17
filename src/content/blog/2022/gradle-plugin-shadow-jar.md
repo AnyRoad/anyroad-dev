@@ -12,7 +12,6 @@ tags:
   - shadow
   - jar
   - packages relocation
-ogImage: ''
 featured: false
 draft: false
 ---

@@ -8,7 +8,6 @@ tags:
   - collections
   - primitive types
   - eclipse collections
-ogImage: ''
 featured: false
 draft: true
 ---

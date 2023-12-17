@@ -10,7 +10,6 @@ tags:
   - local
   - code execution
   - learning kotlin
-ogImage: ''
 description: We can run small Kotlin code fragments online with the Kotlin Playground. It is also widely used in the official Kotlin documentation web-site. But we can also run it locally and customize.
 ---
 
@@ -60,7 +59,7 @@ Create a `public` folder in the `/src/main/resources` to serve the frontend reso
 - Or you can use a simple HTML file like:
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <meta charset="UTF-8" />
@@ -147,7 +146,8 @@ enum class ProjectType(@JsonValue val id: String) {
   fun isJsRelated(): Boolean = this == JS || this == JS_IR || this == CANVAS
 }
 ```
-<br/>
+
+<br />
 
 ```kotlin title="KotlinPlaygroundRestController.kt" ins={2}
 ProjectType.JAVA -> kotlinProjectExecutor.run(project)
@@ -205,7 +205,7 @@ TargetPlatform.JUNIT = new TargetPlatform('junit', 'JUnit');
 TargetPlatform.CANVAS = new TargetPlatform('canvas', 'JavaScript(canvas)');
 
 export default TargetPlatform;
-````
+```
 
 <br/>
 ```javascript title="config.js" ins={8}
@@ -221,7 +221,8 @@ export const API_URLS = {
         break;
         // ... rest of the code
     }
-  }
+
+}
 }
 
 ````

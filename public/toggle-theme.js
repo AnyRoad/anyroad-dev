@@ -24,7 +24,10 @@ function setPreference() {
 function reflectPreference() {
   document.firstElementChild.setAttribute('data-theme', themeValue);
 
-  document.firstElementChild.setAttribute('code-theme', themeValue === 'light' ? 'vitesse-light' : 'dracula-soft');
+  document.firstElementChild.setAttribute(
+    'code-theme',
+    themeValue === 'light' ? 'vitesse-light' : 'dracula-soft'
+  );
 
   document.querySelector('#theme-btn')?.setAttribute('aria-label', themeValue);
 
@@ -40,9 +43,7 @@ function reflectPreference() {
     const bgColor = computedStyles.backgroundColor;
 
     // Set the background color in <meta theme-color ... />
-    document
-      .querySelector("meta[name='theme-color']")
-      ?.setAttribute("content", bgColor);
+    document.querySelector("meta[name='theme-color']")?.setAttribute('content', bgColor);
   }
 }
 
