@@ -2,6 +2,7 @@
 import { type CollectionEntry, getCollection } from 'astro:content';
 import PostDetails from '@layouts/PostDetails.astro';
 import slugify from '@utils/slugify';
+import getPostsWithRT from '@utils/getPostsWithRT';
 
 export interface Props {
   post: CollectionEntry<'blog'>;
@@ -10,7 +11,9 @@ export interface Props {
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
 
-  return posts.map((post) => ({
+  const postsWithRT = await getPostsWithRT(posts);
+
+  return postsWithRT.map((post) => ({
     params: {
       slug: slugify(post.data),
       year: String(new Date(post.data.pubDatetime).getFullYear())

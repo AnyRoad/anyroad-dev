@@ -11,6 +11,7 @@ import { SITE } from './src/config';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import addClasses from './add-classes.mjs';
+import { remarkReadingTime } from './src/utils/remark-reading-time.mjs';
 
 const astroExpressiveCodeOptions = {
   themeCssSelector: (theme) => `[code-theme='${theme.name}']`,
@@ -33,6 +34,7 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [
       remarkToc,
+      remarkReadingTime,
       [
         remarkCollapse,
         {

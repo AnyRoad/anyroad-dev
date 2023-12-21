@@ -19,7 +19,7 @@ const { page } = Astro.params;
 
 const posts = await getCollection('blog');
 
-const sortedPosts = getSortedPosts(posts);
+const sortedPosts = await getSortedPosts(posts);
 
 const totalPages = getPageNumbers(sortedPosts.length);
 

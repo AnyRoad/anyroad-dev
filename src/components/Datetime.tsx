@@ -2,9 +2,10 @@ export interface Props {
   datetime: string | Date;
   size?: 'sm' | 'lg';
   className?: string;
+  readingTime?: string;
 }
 
-export default function Datetime({ datetime, size = 'sm', className }: Props) {
+export default function Datetime({ datetime, size = 'sm', className, readingTime }: Props) {
   return (
     <div className={`flex items-center space-x-2 opacity-80 ${className}`}>
       <svg
@@ -18,6 +19,7 @@ export default function Datetime({ datetime, size = 'sm', className }: Props) {
       <span className='sr-only'>Posted on:</span>
       <span className={`italic ${size === 'sm' ? 'text-sm' : 'text-base'}`}>
         <FormattedDatetime datetime={datetime} />
+        {readingTime && <span> ({readingTime})</span>}
       </span>
     </div>
   );

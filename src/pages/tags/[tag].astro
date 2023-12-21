@@ -34,7 +34,7 @@ const { tag } = Astro.props;
 const posts = await getCollection('blog', ({ data }) => !data.draft);
 
 const tagPosts = getPostsByTag(posts, tag);
-const sortTagsPost = getSortedPosts(tagPosts);
+const sortTagsPost = await getSortedPosts(tagPosts);
 ---
 
 <Layout title={`Tag:${tag} | ${SITE.title}`}>
