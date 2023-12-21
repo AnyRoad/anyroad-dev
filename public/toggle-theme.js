@@ -26,7 +26,7 @@ function reflectPreference() {
 
   document.firstElementChild.setAttribute(
     'code-theme',
-    themeValue === 'light' ? 'vitesse-light' : 'dracula-soft'
+    themeValue === 'light' ? 'github-light' : 'one-dark-pro'
   );
 
   document.querySelector('#theme-btn')?.setAttribute('aria-label', themeValue);

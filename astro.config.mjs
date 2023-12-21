@@ -15,7 +15,7 @@ import { remarkReadingTime } from './src/utils/remark-reading-time.mjs';
 
 const astroExpressiveCodeOptions = {
   themeCssSelector: (theme) => `[code-theme='${theme.name}']`,
-  themes: ['vitesse-light', 'dracula-soft'],
+  themes: ['github-light', 'one-dark-pro'],
   useThemedSelectionColors: false
 };
 
